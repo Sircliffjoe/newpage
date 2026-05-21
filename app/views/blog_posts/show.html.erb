@@ -1,0 +1,54 @@
+<% content_for :title, "#{@blog_post.title} | Newpage Integrity Blog" %>
+
+<article>
+  <section class="pt-28 pb-12 bg-brand-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="text-xs font-medium px-3 py-1 rounded-full bg-brand-blue/10 text-brand-blue"><%= @blog_post.blog_category.name %></span>
+      <h1 class="font-heading text-3xl md:text-4xl font-bold text-brand-gray-900 mt-4 mb-4"><%= @blog_post.title %></h1>
+      <div class="flex items-center gap-4 text-gray-500 text-sm">
+        <span>By <%= @blog_post.author.first_name || "Admin" %></span>
+        <span>•</span>
+        <span><%= @blog_post.published_at&.strftime("%B %d, %Y") %></span>
+      </div>
+    </div>
+  </section>
+
+  <% if @blog_post.featured_image.attached? %>
+    <section class="max-w-4xl mx-auto px-4 -mt-4">
+      <%= image_tag @blog_post.featured_image, class: "w-full h-80 object-cover rounded-2xl shadow-lg" %>
+    </section>
+  <% end %>
+
+  <section class="py-12 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="prose prose-lg max-w-none prose-headings:font-heading prose-a:text-brand-blue">
+        <%= @blog_post.body %>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <div class="flex flex-wrap gap-2">
+          <% @blog_post.tags.to_s.split(",").each do |tag| %>
+            <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium">#<%= tag.strip %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<% if @related_posts.any? %>
+  <section class="py-16 bg-brand-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mb-8">Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <% @related_posts.each do |post| %>
+          <div class="bg-white rounded-2xl shadow-soft p-6">
+            <span class="text-xs text-brand-blue font-medium"><%= post.blog_category.name %></span>
+            <h3 class="font-heading font-bold text-lg mt-2 mb-2"><%= link_to post.title, blog_post_path(slug: post.slug), class: "hover:text-brand-blue" %></h3>
+            <p class="text-gray-500 text-sm"><%= post.published_at&.strftime("%b %d, %Y") %></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>

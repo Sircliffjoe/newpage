@@ -1,0 +1,78 @@
+<% content_for :title, "Study Abroad | Newpage Integrity Travels & Tours" %>
+
+<!-- Hero -->
+<section class="relative py-24 bg-brand-blue-dark">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" alt="Students graduating" class="w-full h-full object-cover opacity-20 mix-blend-overlay">
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <span class="inline-block py-1 px-3 rounded-full bg-brand-red/20 text-brand-red-light border border-brand-red/30 text-sm font-semibold tracking-wider mb-6">INTERNATIONAL EDUCATION</span>
+    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6">Your Journey to a Global Degree</h1>
+    <p class="text-xl text-brand-blue-100 max-w-3xl mx-auto">We partner with top universities worldwide to provide seamless admission processing, scholarship guidance, and student visa support.</p>
+  </div>
+</section>
+
+<!-- Destinations -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="font-heading text-3xl font-bold text-brand-gray-900 mb-4">Top Study Destinations</h2>
+      <p class="text-gray-500">Choose from world-class education systems in these top-rated countries.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <% [
+        { country: "United Kingdom", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=800&auto=format&fit=crop" },
+        { country: "Canada", img: "https://images.unsplash.com/photo-1503614472-8c93d56e92ce?q=80&w=800&auto=format&fit=crop" },
+        { country: "United States", img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?q=80&w=800&auto=format&fit=crop" },
+        { country: "Australia", img: "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?q=80&w=800&auto=format&fit=crop" }
+      ].each do |dest| %>
+        <div class="group relative rounded-2xl overflow-hidden h-64 shadow-md">
+          <img src="<%= dest[:img] %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+            <h3 class="text-white font-heading font-bold text-xl"><%= dest[:country] %></h3>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section class="py-20 bg-brand-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-heading text-3xl font-bold text-center text-brand-gray-900 mb-16">The Admission Process</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="relative text-center">
+        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-brand-blue font-bold text-2xl shadow-md mx-auto mb-6 z-10 relative">1</div>
+        <h4 class="font-bold text-lg mb-2">Course Selection</h4>
+        <p class="text-sm text-gray-500">We help you choose the right course and institution based on your academic background and career goals.</p>
+      </div>
+      <div class="relative text-center">
+        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-brand-blue font-bold text-2xl shadow-md mx-auto mb-6 z-10 relative">2</div>
+        <h4 class="font-bold text-lg mb-2">Application</h4>
+        <p class="text-sm text-gray-500">We handle the documentation, review your Statement of Purpose (SOP), and submit your applications.</p>
+      </div>
+      <div class="relative text-center">
+        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-brand-blue font-bold text-2xl shadow-md mx-auto mb-6 z-10 relative">3</div>
+        <h4 class="font-bold text-lg mb-2">Offer & Payment</h4>
+        <p class="text-sm text-gray-500">Receive your unconditional offer letter and guidance on paying your tuition deposits securely.</p>
+      </div>
+      <div class="relative text-center">
+        <div class="w-16 h-16 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-md mx-auto mb-6 z-10 relative">4</div>
+        <h4 class="font-bold text-lg mb-2">Student Visa</h4>
+        <p class="text-sm text-gray-500">Comprehensive visa processing, interview preparation, and pre-departure briefings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-20 bg-brand-blue text-center">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="font-heading text-3xl font-bold text-white mb-6">Ready to Study Abroad?</h2>
+    <p class="text-brand-blue-100 mb-8">Send us your academic transcripts and let's start your admission process today.</p>
+    <%= link_to "Begin Application", contact_path(subject: 'Study Abroad'), class: "bg-brand-red hover:bg-brand-red-light text-white font-bold py-4 px-10 rounded-full shadow-lg transition-colors" %>
+  </div>
+</section>

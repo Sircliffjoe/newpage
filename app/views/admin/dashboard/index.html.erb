@@ -1,0 +1,67 @@
+<% content_for :header, "Dashboard Overview" %>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="text-gray-500 text-sm font-medium mb-1">Total Leads</div>
+    <div class="text-3xl font-bold text-brand-gray-900"><%= @total_leads %></div>
+  </div>
+  <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="text-brand-red text-sm font-bold mb-1">New Leads</div>
+    <div class="text-3xl font-bold text-brand-red"><%= @new_leads %></div>
+  </div>
+  <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="text-gray-500 text-sm font-medium mb-1">Services</div>
+    <div class="text-3xl font-bold text-brand-gray-900"><%= @total_services %></div>
+  </div>
+  <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div class="text-gray-500 text-sm font-medium mb-1">Blog Posts</div>
+    <div class="text-3xl font-bold text-brand-gray-900"><%= @total_blog_posts %></div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold">Recent Leads</h2>
+      <%= link_to "View All", admin_leads_path, class: "text-sm text-brand-blue hover:underline" %>
+    </div>
+    
+    <% if @recent_leads.any? %>
+      <div class="space-y-4">
+        <% @recent_leads.each do |lead| %>
+          <div class="flex justify-between items-center border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+            <div>
+              <div class="font-medium"><%= lead.name %></div>
+              <div class="text-sm text-gray-500"><%= lead.email %></div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium <%= lead.status == 'new_lead' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800' %>">
+              <%= lead.status.humanize %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-sm">No leads yet.</p>
+    <% end %>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold">Recent Contact Messages</h2>
+    </div>
+    
+    <% if @recent_contacts.any? %>
+      <div class="space-y-4">
+        <% @recent_contacts.each do |contact| %>
+          <div class="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+            <div class="font-medium text-sm"><%= contact.subject %></div>
+            <div class="text-xs text-gray-500 mb-1">From: <%= contact.name %> (<%= contact.email %>)</div>
+            <p class="text-sm text-gray-600 line-clamp-2"><%= contact.message %></p>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-sm">No messages yet.</p>
+    <% end %>
+  </div>
+</div>

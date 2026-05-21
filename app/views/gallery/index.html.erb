@@ -1,0 +1,46 @@
+<% content_for :title, "Photo Gallery | Newpage Integrity Travels & Tours" %>
+
+<!-- Hero -->
+<section class="pt-28 pb-16 bg-white text-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-4">Our Gallery</h1>
+    <p class="text-gray-500 max-w-2xl mx-auto">A visual journey through successful visa approvals, memorable tours, and happy clients.</p>
+  </div>
+</section>
+
+<!-- Filters (Simple implementation, could be enhanced with Stimulus) -->
+<section class="py-4 bg-white border-b border-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-wrap gap-3 justify-center">
+      <%= link_to "All Photos", gallery_path, class: "px-4 py-2 rounded-full text-sm font-medium #{params[:category].blank? ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors" %>
+      <% @categories.compact.each do |cat| %>
+        <%= link_to cat.humanize, gallery_path(category: cat), class: "px-4 py-2 rounded-full text-sm font-medium #{params[:category] == cat ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors" %>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="py-16 bg-brand-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <% if @gallery_images.any? %>
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        <% @gallery_images.each do |image_record| %>
+          <% if image_record.image.attached? %>
+            <div class="relative group rounded-xl overflow-hidden shadow-sm break-inside-avoid">
+              <%= image_tag image_record.image, class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-500" %>
+              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                <h4 class="text-white font-bold mb-1"><%= image_record.caption %></h4>
+                <span class="text-brand-blue-100 text-xs"><%= image_record.category&.humanize %></span>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-20">
+        <h3 class="text-xl text-gray-400">No photos available yet.</h3>
+      </div>
+    <% end %>
+  </div>
+</section>

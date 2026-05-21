@@ -1,0 +1,2 @@
+class PageSetting < ApplicationRecord
+end

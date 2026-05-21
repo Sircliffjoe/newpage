@@ -1,0 +1,68 @@
+<% content_for :title, "CAC & Corporate Services | Newpage Integrity Travels & Tours" %>
+
+<!-- Hero -->
+<section class="relative py-24 bg-brand-gray-900 border-b-4 border-brand-red">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32b7?q=80&w=2061&auto=format&fit=crop" alt="Corporate desk" class="w-full h-full object-cover opacity-20 mix-blend-overlay">
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6">CAC & Corporate Registrations</h1>
+    <p class="text-xl text-gray-400 max-w-3xl mx-auto">Formalize your business in Nigeria with ease. From Business Names to Limited Liability Companies and NGOs, we handle all Corporate Affairs Commission (CAC) requirements.</p>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section class="py-20 bg-brand-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <% [
+        { title: "Business Name Registration", desc: "Perfect for sole proprietors and partnerships. Get your BN certificate within 7-14 days.", icon: "briefcase" },
+        { title: "Limited Liability Company (LLC)", desc: "Incorporate your company (Ltd). Includes MemArt, status report, and certificate of incorporation.", icon: "office-building" },
+        { title: "NGO & Association Registration", desc: "Register your Non-Governmental Organization, Church, Mosque, Club, or Foundation.", icon: "globe" },
+        { title: "Post-Incorporation Services", desc: "Change of directors, change of business name, increase in share capital, and document certified true copies.", icon: "document" },
+        { title: "Annual Returns Filing", desc: "Avoid CAC penalties. We help you file your mandatory annual returns accurately and on time.", icon: "calendar" },
+        { title: "SCUML & TIN Registration", desc: "Obtain your Special Control Unit against Money Laundering certificate and Tax Identification Number.", icon: "shield" }
+      ].each do |service| %>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <h3 class="font-heading font-bold text-xl text-brand-gray-900 mb-3"><%= service[:title] %></h3>
+          <p class="text-gray-500 text-sm mb-6"><%= service[:desc] %></p>
+          <a href="<%= contact_path(subject: service[:title]) %>" class="text-brand-red font-medium hover:text-brand-red-dark inline-flex items-center">
+            Request Service <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </a>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</section>
+
+<!-- Why Register? -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-12">
+    <div class="md:w-1/2">
+      <h2 class="font-heading text-3xl font-bold text-brand-gray-900 mb-6">Why Register Your Business?</h2>
+      <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+          <div class="mt-1 bg-green-100 p-1 rounded-full"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+          <div><strong class="text-gray-900 block">Corporate Identity</strong><span class="text-gray-500 text-sm">Build trust with clients who prefer dealing with registered entities.</span></div>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="mt-1 bg-green-100 p-1 rounded-full"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+          <div><strong class="text-gray-900 block">Corporate Bank Account</strong><span class="text-gray-500 text-sm">Open a business bank account easily with your CAC certificate.</span></div>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="mt-1 bg-green-100 p-1 rounded-full"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+          <div><strong class="text-gray-900 block">Loans & Grants</strong><span class="text-gray-500 text-sm">Access government grants, loans, and investment opportunities safely.</span></div>
+        </li>
+      </ul>
+    </div>
+    <div class="md:w-1/2">
+      <div class="bg-brand-blue text-white p-8 rounded-3xl shadow-xl">
+        <h3 class="font-heading text-2xl font-bold mb-4">Need it fast?</h3>
+        <p class="mb-6 opacity-90">Send us your proposed business names and details on WhatsApp. We offer expedited services.</p>
+        <a href="https://wa.me/2348038656409" target="_blank" class="block w-full text-center bg-white text-brand-blue font-bold py-4 rounded-xl">Chat with CAC Expert</a>
+      </div>
+    </div>
+  </div>
+</section>

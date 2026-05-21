@@ -1,0 +1,53 @@
+<% content_for :title, "Travel Destinations | Newpage Integrity Travels & Tours" %>
+
+<!-- Hero -->
+<section class="relative py-24 bg-brand-blue-dark">
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035&auto=format&fit=crop" alt="World travel" class="w-full h-full object-cover opacity-30 mix-blend-overlay">
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6">Explore Destinations</h1>
+    <p class="text-xl text-gray-300 max-w-3xl mx-auto">Discover top travel and study destinations across the globe. Your next adventure awaits.</p>
+  </div>
+</section>
+
+<!-- Destinations Grid -->
+<section class="py-20 bg-brand-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <% if @destinations.any? %>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% @destinations.each do |destination| %>
+          <div class="group bg-white rounded-2xl overflow-hidden shadow-soft hover:-translate-y-2 transition-all duration-300">
+            <div class="h-56 overflow-hidden">
+              <% if destination.hero_image.attached? %>
+                <%= image_tag destination.hero_image, class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
+              <% else %>
+                <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center">
+                  <span class="text-6xl"><%= flag_emoji(destination.country_code) %></span>
+                </div>
+              <% end %>
+            </div>
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-3">
+                <h3 class="font-heading font-bold text-xl text-brand-gray-900"><%= destination.name %></h3>
+                <span class="text-sm px-3 py-1 rounded-full bg-brand-blue/10 text-brand-blue font-medium"><%= destination.category&.humanize %></span>
+              </div>
+              <p class="text-gray-500 text-sm mb-4"><%= strip_tags(destination.description.to_s).truncate(100) %></p>
+              <% if destination.cost_estimate.present? %>
+                <p class="text-brand-red font-semibold text-sm mb-4">From <%= destination.cost_estimate %></p>
+              <% end %>
+              <%= link_to destination_path(slug: destination.slug), class: "block w-full text-center bg-brand-gray-50 hover:bg-brand-blue hover:text-white text-brand-blue font-semibold py-3 rounded-xl transition-colors" do %>
+                View Details
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-20">
+        <h3 class="text-xl text-gray-400 font-medium">Destinations coming soon.</h3>
+        <p class="text-gray-400 mt-2">Contact us for available travel packages.</p>
+      </div>
+    <% end %>
+  </div>
+</section>

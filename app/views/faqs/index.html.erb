@@ -1,0 +1,86 @@
+<% content_for :title, "Frequently Asked Questions | Newpage Integrity Travels & Tours" %>
+
+<!-- Hero -->
+<section class="pt-28 pb-16 bg-brand-gray-50 text-center">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-4">Frequently Asked Questions</h1>
+    <p class="text-gray-500 max-w-2xl mx-auto">Find answers to common questions about our visa, travel, and corporate services.</p>
+  </div>
+</section>
+
+<!-- FAQs -->
+<section class="py-16 bg-white">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <% if @grouped_faqs.any? %>
+      <div class="space-y-12">
+        <% @grouped_faqs.each do |category, faqs| %>
+          <div>
+            <h2 class="font-heading text-2xl font-bold text-brand-blue mb-6"><%= category.humanize %></h2>
+            <div class="space-y-4">
+              <% faqs.each do |faq| %>
+                <details class="group bg-brand-gray-50 rounded-xl [&_summary::-webkit-details-marker]:hidden">
+                  <summary class="flex items-center justify-between p-6 cursor-pointer font-semibold text-brand-gray-900">
+                    <%= faq.question %>
+                    <span class="relative flex-shrink-0 ml-1.5 w-5 h-5">
+                      <svg class="absolute inset-0 w-5 h-5 opacity-100 group-open:opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <svg class="absolute inset-0 w-5 h-5 opacity-0 group-open:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <div class="px-6 pb-6 text-gray-600 prose">
+                    <%= faq.answer %>
+                  </div>
+                </details>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Placeholder FAQs if database is empty -->
+      <div class="space-y-4">
+        <details class="group bg-brand-gray-50 rounded-xl [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-6 cursor-pointer font-semibold text-brand-gray-900">
+            How long does the UK Study Visa process take?
+            <span class="relative flex-shrink-0 ml-1.5 w-5 h-5">
+              <svg class="absolute inset-0 w-5 h-5 opacity-100 group-open:opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <svg class="absolute inset-0 w-5 h-5 opacity-0 group-open:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </span>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">Standard processing takes about 3 weeks from the date of your biometric appointment. However, priority and super-priority services are available for faster decisions.</div>
+        </details>
+        
+        <details class="group bg-brand-gray-50 rounded-xl [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-6 cursor-pointer font-semibold text-brand-gray-900">
+            Do you guarantee visa approvals?
+            <span class="relative flex-shrink-0 ml-1.5 w-5 h-5">
+              <svg class="absolute inset-0 w-5 h-5 opacity-100 group-open:opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <svg class="absolute inset-0 w-5 h-5 opacity-0 group-open:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </span>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">While we cannot legally guarantee visa approvals (as the final decision rests solely with the embassy/consulate), our meticulous preparation and expert guidance give you the highest possible chance of success.</div>
+        </details>
+
+        <details class="group bg-brand-gray-50 rounded-xl [&_summary::-webkit-details-marker]:hidden">
+          <summary class="flex items-center justify-between p-6 cursor-pointer font-semibold text-brand-gray-900">
+            What is required for CAC Business Name Registration?
+            <span class="relative flex-shrink-0 ml-1.5 w-5 h-5">
+              <svg class="absolute inset-0 w-5 h-5 opacity-100 group-open:opacity-0 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <svg class="absolute inset-0 w-5 h-5 opacity-0 group-open:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </span>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">You will need two proposed names, a valid ID card (NIN/Passport/Voters Card), passport photograph, email address, phone number, and a verifiable residential/business address.</div>
+        </details>
+      </div>
+    <% end %>
+    
+    <div class="mt-12 text-center">
+      <p class="text-gray-500">Still have questions?</p>
+      <%= link_to "Contact Support", contact_path, class: "text-brand-blue font-semibold hover:underline mt-2 inline-block" %>
+    </div>
+  </div>
+</section>

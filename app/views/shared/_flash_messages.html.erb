@@ -1,0 +1,24 @@
+<div id="flash-messages" class="fixed top-24 right-4 z-50 flex flex-col gap-2">
+  <% flash.each do |key, message| %>
+    <% 
+      bg_color = case key.to_sym
+                 when :notice, :success then "bg-green-500"
+                 when :alert, :error then "bg-brand-red"
+                 else "bg-brand-blue"
+                 end
+    %>
+    <div class="<%= bg_color %> text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-between min-w-[300px]" data-controller="flash" data-action="animationend->flash#remove">
+      <div class="flex items-center gap-3">
+        <% if key.to_sym == :notice || key.to_sym == :success %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <% else %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <% end %>
+        <span class="font-medium"><%= message %></span>
+      </div>
+      <button class="text-white/80 hover:text-white ml-4 focus:outline-none" onclick="this.parentElement.remove()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  <% end %>
+</div>
