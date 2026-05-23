@@ -39,6 +39,6 @@ class Admin::TestimonialsController < Admin::BaseController
   end
 
   def testimonial_params
-    params.require(:testimonial).permit(:client_name, :content, :service_received, :rating, :image, :position, :published)
+    params.require(:testimonial).permit(:client_name, :content, :service_type, :rating, :image, :position, :published)
   end
 end
