@@ -1,0 +1,7 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">New Gallery Image</h1>
+    <%= link_to "Back to Gallery", admin_gallery_images_path, class: "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" %>
+  </div>
+  <%= render "form", gallery_image: @gallery_image %>
+</div>
