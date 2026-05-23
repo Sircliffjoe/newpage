@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_21_153023) do
+ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -152,6 +152,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_21_153023) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.text "body"
+    t.bigint "author_id", null: false
+    t.string "notetable_type", null: false
+    t.bigint "notetable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_notes_on_author_id"
+    t.index ["notetable_type", "notetable_id"], name: "index_notes_on_notetable"
+  end
+
   create_table "page_settings", force: :cascade do |t|
     t.string "key"
     t.jsonb "value"
@@ -216,4 +227,5 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_21_153023) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "blog_posts", "blog_categories"
   add_foreign_key "blog_posts", "users", column: "author_id"
+  add_foreign_key "notes", "users", column: "author_id"
 end
