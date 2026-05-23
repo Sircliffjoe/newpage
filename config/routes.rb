@@ -36,6 +36,10 @@ Rails.application.routes.draw do
     resources :gallery_images
     resources :faqs
     resources :leads
+    resources :team_members
+    resources :contact_submissions, only: [:index, show, destroy]
+    resources :newsletter_subscribers, only: [:index, destroy]
+    resources :page_settings, only: [:index, edit, update]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
