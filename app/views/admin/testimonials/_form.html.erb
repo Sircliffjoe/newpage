@@ -1,0 +1,63 @@
+<div class="bg-white shadow sm:rounded-lg p-6">
+  <%= form_with model: [:admin, @testimonial], local: true, class: "space-y-6" do |form| %>
+    <% if @testimonial.errors.any? %>
+      <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+        <h2 class="font-semibold"><%= pluralize(@testimonial.errors.count, "error") %> prohibited this testimonial from being saved:</h2>
+        <ul class="list-disc list-inside mt-2">
+          <% @testimonial.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :client_name, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.text_field :client_name, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :service_type, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :service_type, Testimonial.service_types.keys.map { |k| [k.humanize, k] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :content, class: "block text-sm font-medium text-gray-700" %>
+      <%= form.text_area :content, rows: 4, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= form.label :service_type, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :service_type, Testimonial.service_types.keys.map { |k| [k.humanize, k] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :rating, class: "block text-sm font-medium text-gray-700" %>
+        <%= form.select :rating, (1..5).map { |n| ["#{n} Star#{'s' if n > 1}", n] }, {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :image, "Client Photo", class: "block text-sm font-medium text-gray-700" %>
+      <% if @testimonial.image.attached? %>
+        <div class="mt-2">
+          <%= image_tag @testimonial.image, class: "h-24 w-24 rounded-full object-cover" %>
+        </div>
+      <% end %>
+      <%= form.file_field :image, class: "mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+    </div>
+
+    <div class="flex items-center">
+      <%= form.check_box :featured, class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
+      <%= form.label :featured, "Featured Testimonial", class: "ml-2 block text-sm text-gray-900" %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= form.submit class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <%= link_to "Cancel", admin_testimonials_path, class: "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" %>
+    </div>
+  <% end %>
+</div>

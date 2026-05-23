@@ -1,0 +1,61 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Lead: <%= @lead.name %></h1>
+    <div class="flex gap-3">
+      <%= link_to "Back to Leads", admin_leads_path, class: "bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="md:col-span-2">
+      <div class="bg-white shadow sm:rounded-lg p-6 space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Name</dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= @lead.name %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Email</dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= @lead.email %></dd>
+          </div>
+        </div>
+
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Phone</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @lead.phone.presence || "Not provided" %></dd>
+        </div>
+
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Service Type</dt>
+          <dd class="mt-1"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800"><%= @lead.service_type.humanize %></span></dd>
+        </div>
+
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Status</dt>
+          <dd class="mt-1"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><%= @lead.status.humanize %></span></dd>
+        </div>
+
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Message</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @lead.message.presence || "No message" %></dd>
+        </div>
+
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Notes</dt>
+          <dd class="mt-1 text-sm text-gray-900"><%= @lead.notes.presence || "No notes" %></dd>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-1">
+      <div class="bg-white shadow sm:rounded-lg p-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
+        <div class="space-y-2">
+          <%= button_to "Mark as Contacted", admin_lead_path(@lead), method: :patch, params: { lead: { status: :contacted } }, class: "w-full text-left px-4 py-2 bg-yellow-100 text-yellow-800 rounded hover:bg-yellow-200" %>
+          <%= button_to "Mark as Converted", admin_lead_path(@lead), method: :patch, params: { lead: { status: :converted } }, class: "w-full text-left px-4 py-2 bg-green-100 text-green-800 rounded hover:bg-green-200" %>
+          <%= button_to "Mark as Closed", admin_lead_path(@lead), method: :patch, params: { lead: { status: :closed } }, class: "w-full text-left px-4 py-2 bg-red-100 text-red-800 rounded hover:bg-red-200" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
