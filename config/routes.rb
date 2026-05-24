@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   
   # Contact
   get "/contact", to: "contacts#new", as: :contact
-  post "/contact", to: "contacts#create"
+  post "/contact", to: "contacts#create", as: :contacts
 
   # Admin Dashboard
   namespace :admin do
@@ -37,9 +37,9 @@ Rails.application.routes.draw do
     resources :faqs
     resources :leads
     resources :team_members
-    resources :contact_submissions, only: [:index, show, destroy]
-    resources :newsletter_subscribers, only: [:index, destroy]
-    resources :page_settings, only: [:index, edit, update]
+    resources :contact_submissions, only: [:index, :show, :destroy]
+    resources :newsletter_subscribers, only: [:index, :destroy]
+    resources :page_settings, only: [:index, :edit, :update]
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
