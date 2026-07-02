@@ -333,7 +333,7 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sitemap_generator (7.0.1)
+    sitemap_generator (7.0.2)
       builder (~> 3.0)
     solid_cable (3.0.12)
       actioncable (>= 7.2)
