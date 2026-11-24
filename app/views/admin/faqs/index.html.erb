@@ -21,7 +21,7 @@
               <div class="text-sm font-medium text-gray-900"><%= faq.question %></div>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= faq.category.presence || "General" %></td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= faq.order %></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= faq.position %></td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <%= link_to "Edit", edit_admin_faq_path(faq), class: "text-blue-600 hover:text-blue-900 mr-3" %>
               <%= button_to "Delete", admin_faq_path(faq), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-900" %>

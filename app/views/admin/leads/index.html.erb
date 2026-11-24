@@ -1,59 +1,63 @@
-<div class="p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Leads</h1>
-    <div class="flex gap-3">
-      <%= link_to "Export CSV", admin_leads_path(format: :csv), class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
-    </div>
-  </div>
+<% content_for :header, "Leads & CRM" %>
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+  <div>
+    <h2 class="font-heading text-2xl font-bold text-slate-900">Leads &amp; Inquiries</h2>
+    <p class="text-sm text-slate-500">Track, qualify, and follow up with prospective travel, visa, study abroad, and CAC clients.</p>
+  </div>
+  <div class="flex gap-2">
+    <%= link_to "Export CSV", export_admin_leads_path, class: "px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-semibold" %>
+    <%= link_to "Email Leads", new_admin_email_path, class: "px-4 py-2.5 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-semibold" %>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-4 mb-6">
+  <%= form_with url: admin_leads_path, method: :get, class: "grid grid-cols-1 sm:grid-cols-4 gap-3" do %>
+    <%= text_field_tag :q, params[:q], placeholder: "Search name, email, phone...", class: "rounded-xl border-slate-300 text-sm" %>
+    <%= select_tag :status, options_for_select([["All Statuses", ""]] + Lead.statuses.keys.map { |k| [k.humanize, k] }, params[:status]), class: "rounded-xl border-slate-300 text-sm" %>
+    <%= select_tag :service_type, options_for_select([["All Services", ""]] + Lead.service_types.keys.map { |k| [k.humanize, k] }, params[:service_type]), class: "rounded-xl border-slate-300 text-sm" %>
+    <div class="flex gap-2">
+      <%= submit_tag "Filter", class: "flex-1 px-4 py-2 bg-brand-blue text-white rounded-xl text-sm font-semibold cursor-pointer" %>
+      <%= link_to "Reset", admin_leads_path, class: "px-4 py-2 border border-slate-200 text-slate-600 rounded-xl text-sm font-semibold" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-slate-200 text-sm">
+      <thead class="bg-slate-50">
         <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Service</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Client</th>
+          <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Service</th>
+          <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
+          <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Date</th>
+          <th class="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
         </tr>
       </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
+      <tbody class="divide-y divide-slate-100">
         <% @leads.each do |lead| %>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900"><%= lead.name %></div>
+          <tr class="hover:bg-slate-50/70">
+            <td class="px-6 py-4">
+              <div class="font-semibold text-slate-900"><%= lead.name %></div>
+              <div class="text-xs text-slate-500"><%= lead.email %> <%= "• #{lead.phone}" if lead.phone.present? %></div>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="text-sm text-gray-900"><%= lead.email %></div>
-              <div class="text-sm text-gray-500"><%= lead.phone.presence || "No phone" %></div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                <%= lead.service_type.humanize %>
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                <%= case lead.status
-                    when 'new_lead' then 'bg-blue-100 text-blue-800'
-                    when 'contacted' then 'bg-yellow-100 text-yellow-800'
-                    when 'pending' then 'bg-orange-100 text-orange-800'
-                    when 'converted' then 'bg-green-100 text-green-800'
-                    when 'closed' then 'bg-red-100 text-red-800'
-                    else 'bg-gray-100 text-gray-800'
-                  end %>">
+            <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700"><%= lead.service_type.humanize %></span></td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold <%= lead.new_lead? ? 'bg-red-100 text-red-700' : (lead.converted? ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-50 text-brand-blue') %>">
                 <%= lead.status.humanize %>
               </span>
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              <%= lead.created_at.strftime("%b %d, %Y") %>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <%= link_to "View", admin_lead_path(lead), class: "text-blue-600 hover:text-blue-900 mr-3" %>
-              <%= button_to "Delete", admin_lead_path(lead), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:text-red-900" %>
+            <td class="px-6 py-4 text-xs text-slate-500"><%= lead.created_at.strftime("%b %d, %Y") %></td>
+            <td class="px-6 py-4 text-right space-x-3 whitespace-nowrap">
+              <%= link_to "Open", admin_lead_path(lead), class: "font-semibold text-brand-blue hover:underline" %>
+              <%= button_to "Delete", admin_lead_path(lead), method: :delete, data: { turbo_confirm: "Delete this lead?" }, form: { class: "inline" }, class: "font-semibold text-red-600 hover:underline cursor-pointer" %>
             </td>
           </tr>
+        <% end %>
+        <% if @leads.empty? %>
+          <tr><td colspan="5" class="px-6 py-12 text-center text-slate-500">No leads match your filters.</td></tr>
         <% end %>
       </tbody>
     </table>

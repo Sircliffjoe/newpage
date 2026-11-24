@@ -1,0 +1,95 @@
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8">
+  <%= form_with model: [:admin, @page_setting], class: "space-y-6" do |f| %>
+    <% if @page_setting.errors.any? %>
+      <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm">
+        <ul class="list-disc list-inside">
+          <% @page_setting.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= f.label :page_name, "Page Name", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :page_name, required: true, class: "w-full rounded-xl border-slate-300 shadow-xs focus:border-brand-blue focus:ring-brand-blue text-sm" %>
+      </div>
+      <div>
+        <%= f.label :key, "System Key (e.g. home, about, global)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :key, required: true, readonly: @page_setting.persisted?, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm font-mono #{@page_setting.persisted? ? 'bg-slate-100 text-slate-500' : ''}" %>
+      </div>
+    </div>
+
+    <!-- Hero & Section Media Uploads -->
+    <div class="border-t border-slate-100 pt-6">
+      <h3 class="font-heading text-lg font-bold text-slate-900 mb-4">Page Images (ActiveStorage)</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+          <%= f.label :hero_image, "Hero Banner Image", class: "block text-xs font-bold uppercase text-slate-600 mb-2" %>
+          <% if @page_setting.hero_image.attached? %>
+            <%= image_tag @page_setting.hero_image, class: "w-full h-32 object-cover rounded-lg mb-3 border" %>
+          <% end %>
+          <%= f.file_field :hero_image, accept: "image/*", class: "block w-full text-xs text-slate-600" %>
+        </div>
+
+        <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+          <%= f.label :section_image, "Secondary / Feature Image", class: "block text-xs font-bold uppercase text-slate-600 mb-2" %>
+          <% if @page_setting.section_image.attached? %>
+            <%= image_tag @page_setting.section_image, class: "w-full h-32 object-cover rounded-lg mb-3 border" %>
+          <% end %>
+          <%= f.file_field :section_image, accept: "image/*", class: "block w-full text-xs text-slate-600" %>
+        </div>
+
+        <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+          <%= f.label :og_image, "Social Share (OG) Image", class: "block text-xs font-bold uppercase text-slate-600 mb-2" %>
+          <% if @page_setting.og_image.attached? %>
+            <%= image_tag @page_setting.og_image, class: "w-full h-32 object-cover rounded-lg mb-3 border" %>
+          <% end %>
+          <%= f.file_field :og_image, accept: "image/*", class: "block w-full text-xs text-slate-600" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Copy -->
+    <div class="border-t border-slate-100 pt-6 space-y-4">
+      <h3 class="font-heading text-lg font-bold text-slate-900">Hero Copy &amp; Content</h3>
+      <div>
+        <%= f.label :hero_title, "Hero Headline", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :hero_title, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :hero_subtitle, "Hero Subtitle", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_area :hero_subtitle, rows: 2, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :rich_content, "Rich Page Content (Optional)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.rich_text_area :rich_content %>
+      </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="border-t border-slate-100 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= f.label :meta_title, "SEO Meta Title", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :meta_title, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :meta_description, "SEO Meta Description", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_area :meta_description, rows: 2, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+    </div>
+
+    <!-- JSON Settings -->
+    <div class="border-t border-slate-100 pt-6">
+      <%= f.label :settings, "Custom Structured Settings (JSON)", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.text_area :settings, value: JSON.pretty_generate(@page_setting.settings || {}), rows: 6, class: "w-full font-mono text-xs rounded-xl border-slate-300 shadow-xs" %>
+      <p class="text-xs text-slate-500 mt-1">Used for stats, office address, WhatsApp number, social links, and custom page values.</p>
+    </div>
+
+    <div class="flex justify-end gap-3 pt-4">
+      <%= link_to "Cancel", admin_page_settings_path, class: "px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50" %>
+      <%= f.submit "Save Page Settings", class: "px-6 py-2.5 rounded-xl bg-brand-blue hover:bg-brand-blue-light text-white text-sm font-semibold shadow-xs cursor-pointer" %>
+    </div>
+  <% end %>
+</div>

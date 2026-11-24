@@ -1,0 +1,79 @@
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 max-w-3xl">
+  <%= form_with model: [:admin, @team_member], class: "space-y-5" do |f| %>
+    <% if @team_member.errors.any? %>
+      <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm">
+        <ul class="list-disc list-inside">
+          <% @team_member.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :name, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :name, required: true, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :role, "Job Title / Role", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :role, required: true, placeholder: "e.g. Managing Director", class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+    </div>
+
+    <div>
+      <%= f.label :bio, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+      <%= f.text_area :bio, rows: 4, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+    </div>
+
+    <div class="p-4 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">
+      <%= f.label :image, "Profile Photo", class: "block text-xs font-bold uppercase text-slate-600 mb-2" %>
+      <% if @team_member.image.attached? %>
+        <div class="mb-3">
+          <%= image_tag @team_member.image, class: "h-28 w-28 rounded-full object-cover border" %>
+        </div>
+      <% end %>
+      <%= f.file_field :image, accept: "image/*", class: "block w-full text-xs text-slate-600" %>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <%= f.label :email, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.email_field :email, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :phone, class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_field :phone, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <%= f.label :linkedin, "LinkedIn URL", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.url_field :linkedin, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :twitter, "Twitter / X URL", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.url_field :twitter, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div>
+        <%= f.label :facebook, "Facebook URL", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.url_field :facebook, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+      <div>
+        <%= f.label :position, "Display Order", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.number_field :position, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+      <div class="flex items-center pt-5">
+        <%= f.check_box :published, class: "h-4 w-4 text-brand-blue rounded border-slate-300" %>
+        <%= f.label :published, "Published on About Page", class: "ml-2 text-sm font-medium text-slate-700" %>
+      </div>
+    </div>
+
+    <div class="flex gap-3 pt-2">
+      <%= f.submit class: "px-6 py-2.5 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-semibold cursor-pointer" %>
+      <%= link_to "Cancel", admin_team_members_path, class: "px-5 py-2.5 border border-slate-300 text-slate-700 rounded-xl text-sm font-semibold" %>
+    </div>
+  <% end %>
+</div>

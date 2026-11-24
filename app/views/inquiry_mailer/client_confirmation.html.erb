@@ -1,0 +1,16 @@
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
+  <div style="background: #1a365d; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
+    <h1 style="color: #ffffff; margin: 0; font-size: 22px;">NewPage <span style="color: #e53e3e;">Integrity</span> Travels</h1>
+  </div>
+  <div style="background: #ffffff; padding: 28px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
+    <p>Dear <strong><%= @submission.name %></strong>,</p>
+    <p>Thank you for reaching out to <strong>NewPage Integrity Travels &amp; Tours Limited</strong>. We have received your inquiry regarding <strong><%= @submission.subject.presence || "our services" %></strong>.</p>
+    <p>One of our dedicated consultants will review your message and get back to you within 24 hours.</p>
+    <div style="background: #f8fafc; border-left: 4px solid #1a365d; padding: 14px 16px; margin: 20px 0;">
+      <p style="margin: 0; font-size: 13px; color: #475569;"><strong>Your Message:</strong></p>
+      <p style="margin: 8px 0 0; font-size: 14px;"><%= simple_format(@submission.message) %></p>
+    </div>
+    <p>Need faster assistance? Chat with us directly on WhatsApp at <a href="https://wa.me/2348038656409" style="color: #1a365d; font-weight: bold;">+234 803 865 6409</a>.</p>
+    <p style="margin-top: 24px;">Warm regards,<br><strong>NewPage Integrity Travels &amp; Tours Team</strong><br>No 4 Airport Road, Opp. Kosini Junction, Warri, Delta State</p>
+  </div>
+</div>

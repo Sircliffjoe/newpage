@@ -21,8 +21,8 @@
     <div>
       <dt class="text-sm font-medium text-gray-500">Status</dt>
       <dd class="mt-1">
-        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @service.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
-          <%= @service.active? ? 'Active' : 'Inactive' %>
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @service.published? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+          <%= @service.published? ? 'Published' : 'Draft' %>
         </span>
       </dd>
     </div>
@@ -34,7 +34,7 @@
 
     <div>
       <dt class="text-sm font-medium text-gray-500">Order</dt>
-      <dd class="mt-1 text-sm text-gray-900"><%= @service.order %></dd>
+      <dd class="mt-1 text-sm text-gray-900"><%= @service.position %></dd>
     </div>
 
     <div>

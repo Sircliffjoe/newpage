@@ -1,4 +1,5 @@
 class Admin::BlogPostsController < Admin::BaseController
+  before_action :require_content_editor!
   before_action :set_blog_post, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -6,16 +7,18 @@ class Admin::BlogPostsController < Admin::BaseController
   end
 
   def show; end
+
   def new
-    @blog_post = BlogPost.new
+    @blog_post = BlogPost.new(status: :draft)
   end
+
   def edit; end
 
   def create
     @blog_post = BlogPost.new(blog_post_params)
     @blog_post.author = current_user
     if @blog_post.save
-      redirect_to admin_blog_posts_path, notice: "Blog post created."
+      redirect_to admin_blog_posts_path, notice: "Blog post created successfully."
     else
       render :new, status: :unprocessable_entity
     end
@@ -23,7 +26,7 @@ class Admin::BlogPostsController < Admin::BaseController
 
   def update
     if @blog_post.update(blog_post_params)
-      redirect_to admin_blog_posts_path, notice: "Blog post updated."
+      redirect_to admin_blog_posts_path, notice: "Blog post updated successfully."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -37,10 +40,13 @@ class Admin::BlogPostsController < Admin::BaseController
   private
 
   def set_blog_post
-    @blog_post = BlogPost.find(params[:id])
+    @blog_post = BlogPost.friendly.find(params[:id])
   end
 
   def blog_post_params
-    params.require(:blog_post).permit(:title, :blog_category_id, :body, :featured_image, :excerpt, :tags, :status, :published_at)
+    params.require(:blog_post).permit(
+      :title, :slug, :blog_category_id, :body, :featured_image,
+      :excerpt, :tags, :status, :published_at, :meta_title, :meta_description, :featured
+    )
   end
 end

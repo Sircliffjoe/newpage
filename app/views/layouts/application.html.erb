@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= content_for(:title) || "Newpage" %></title>
+    <%= display_meta_tags %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Newpage">
+    <meta name="application-name" content="NewPage Integrity Travels">
     <meta name="mobile-web-app-capable" content="yes">
+    <link rel="canonical" href="<%= request.original_url %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -16,15 +17,40 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <% if ENV["GOOGLE_ANALYTICS_ID"].present? %>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV['GOOGLE_ANALYTICS_ID'] %>"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '<%= ENV["GOOGLE_ANALYTICS_ID"] %>');
+      </script>
+    <% end %>
+
+    <script type="application/ld+json">
+      <%= raw({
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "NewPage Integrity Travels & Tours Limited",
+        "url": "https://newpageintegritytravels.com",
+        "telephone": site_setting("phone", "+234 803 865 6409"),
+        "email": site_setting("email", "newpageintegritytravels@gmail.com"),
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": site_setting("address", "No 4 Airport Road, Opposite Kosini Junction"),
+          "addressLocality": "Warri",
+          "addressRegion": "Delta State",
+          "addressCountry": "NG"
+        }
+      }.to_json) %>
+    </script>
   </head>
 
   <body class="font-sans text-brand-gray-800 antialiased min-h-screen flex flex-col bg-brand-gray-50">

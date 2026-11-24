@@ -87,6 +87,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    host: <%= ENV.fetch("DB_HOST", "localhost") %>
     database: newpage_production
     username: newpage
     password: <%= ENV["NEWPAGE_DATABASE_PASSWORD"] %>

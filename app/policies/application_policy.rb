@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ApplicationPolicy
   attr_reader :user, :record
 
@@ -9,15 +7,15 @@ class ApplicationPolicy
   end
 
   def index?
-    false
+    admin_access?
   end
 
   def show?
-    false
+    admin_access?
   end
 
   def create?
-    false
+    content_access?
   end
 
   def new?
@@ -25,7 +23,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    content_access?
   end
 
   def edit?
@@ -33,7 +31,17 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    user&.super_admin? || false
+  end
+
+  private
+
+  def admin_access?
+    user.present? && (user.super_admin? || user.content_editor? || user.staff?)
+  end
+
+  def content_access?
+    user.present? && (user.super_admin? || user.content_editor?)
   end
 
   class Scope
@@ -43,7 +51,7 @@ class ApplicationPolicy
     end
 
     def resolve
-      raise NoMethodError, "You must define #resolve in #{self.class}"
+      scope.all
     end
 
     private

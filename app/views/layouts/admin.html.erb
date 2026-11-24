@@ -1,62 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Admin Dashboard | Newpage</title>
+    <title>NewPage Integrity | Management Center</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+    <style>
+      trix-toolbar { border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 0.5rem; }
+      trix-editor { min-height: 260px; border: 1px solid #cbd5e1 !important; border-radius: 0.75rem !important; padding: 1rem !important; background: #ffffff; }
+      trix-editor:focus { outline: none; border-color: #1a365d !important; box-shadow: 0 0 0 3px rgba(26, 54, 93, 0.12); }
+    </style>
   </head>
 
-  <body class="bg-gray-100 font-sans text-gray-900 h-screen flex overflow-hidden">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-brand-blue-dark text-white flex-shrink-0 overflow-y-auto">
-      <div class="p-6">
-        <h2 class="text-2xl font-bold font-heading">Newpage <span class="text-brand-red">Admin</span></h2>
-      </div>
-      <nav class="mt-6 px-4 space-y-2">
-        <%= link_to "Dashboard", admin_root_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Leads", admin_leads_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Services", admin_services_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Destinations", admin_destinations_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Blog Posts", admin_blog_posts_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Blog Categories", admin_blog_categories_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Testimonials", admin_testimonials_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "Gallery", admin_gallery_images_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        <%= link_to "FAQs", admin_faqs_path, class: "block px-4 py-2 rounded hover:bg-white/10" %>
-        
-        <div class="pt-8 mt-8 border-t border-white/20">
-          <%= link_to "Back to Website", root_path, class: "block px-4 py-2 rounded hover:bg-white/10 text-gray-400" %>
-          <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "w-full text-left px-4 py-2 rounded hover:bg-white/10 text-brand-red-light mt-2" %>
+  <body class="bg-slate-50 font-sans text-slate-900 min-h-screen" data-controller="admin-sidebar">
+    <!-- Mobile Header -->
+    <div class="lg:hidden sticky top-0 z-40 bg-brand-blue-dark text-white px-4 h-16 flex items-center justify-between shadow">
+      <span class="font-heading font-bold text-lg">NewPage <span class="text-brand-red-light">CMS</span></span>
+      <button type="button" data-action="click->admin-sidebar#toggle" class="p-2 rounded-lg bg-white/10 hover:bg-white/20">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div data-admin-sidebar-target="overlay" data-action="click->admin-sidebar#close" class="hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-xs lg:hidden"></div>
+
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside data-admin-sidebar-target="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-brand-blue-dark text-slate-300 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out flex-shrink-0">
+        <div class="px-6 py-6 border-b border-white/10">
+          <%= link_to admin_root_path, class: "flex items-center gap-3" do %>
+            <div class="w-9 h-9 rounded-xl bg-brand-red flex items-center justify-center text-white font-heading font-bold shadow">NP</div>
+            <div>
+              <div class="font-heading font-bold text-lg text-white leading-tight">NewPage <span class="text-brand-red-light">CMS</span></div>
+              <div class="text-xs text-slate-400">Management Center</div>
+            </div>
+          <% end %>
         </div>
-      </nav>
-    </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col overflow-hidden">
-      <header class="bg-white shadow-sm h-16 flex items-center justify-between px-8 flex-shrink-0">
-        <h1 class="text-xl font-semibold"><%= yield(:header) || "Dashboard" %></h1>
-        <div class="flex items-center gap-4">
-          <span class="text-sm font-medium"><%= current_user&.email %></span>
-          <span class="px-2 py-1 bg-brand-blue/10 text-brand-blue rounded text-xs font-bold uppercase"><%= current_user&.role %></span>
+        <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-6">
+          <% nav_link = ->(label, path, active) {
+            base = "flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors"
+            state = active ? "bg-white/15 text-white shadow-sm" : "text-slate-300 hover:bg-white/10 hover:text-white"
+            link_to label, path, class: "#{base} #{state}"
+          } %>
+
+          <div>
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Main</div>
+            <div class="space-y-1">
+              <%= nav_link.call("Dashboard", admin_root_path, controller_name == "dashboard") %>
+            </div>
+          </div>
+
+          <div>
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Leads & Client Ops</div>
+            <div class="space-y-1">
+              <%= nav_link.call("Leads & CRM", admin_leads_path, controller_name == "leads") %>
+              <%= nav_link.call("Contact Inbox", admin_contact_submissions_path, controller_name == "contact_submissions") %>
+              <%= nav_link.call("Newsletter Subscribers", admin_newsletter_subscribers_path, controller_name == "newsletter_subscribers") %>
+            </div>
+          </div>
+
+          <div>
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Content Hub</div>
+            <div class="space-y-1">
+              <%= nav_link.call("Services", admin_services_path, controller_name == "services") %>
+              <%= nav_link.call("Destinations", admin_destinations_path, controller_name == "destinations") %>
+              <%= nav_link.call("Blog Posts", admin_blog_posts_path, controller_name == "blog_posts") %>
+              <%= nav_link.call("Blog Categories", admin_blog_categories_path, controller_name == "blog_categories") %>
+              <%= nav_link.call("FAQs", admin_faqs_path, controller_name == "faqs") %>
+              <%= nav_link.call("Testimonials", admin_testimonials_path, controller_name == "testimonials") %>
+            </div>
+          </div>
+
+          <div>
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Media & Pages</div>
+            <div class="space-y-1">
+              <%= nav_link.call("Site Pages & Banners", admin_page_settings_path, controller_name == "page_settings") %>
+              <%= nav_link.call("Photo Gallery", admin_gallery_images_path, controller_name == "gallery_images") %>
+              <%= nav_link.call("Team Members", admin_team_members_path, controller_name == "team_members") %>
+            </div>
+          </div>
+
+          <div>
+            <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Communications</div>
+            <div class="space-y-1">
+              <%= nav_link.call("Email Center (Brevo)", admin_emails_path, controller_name == "emails") %>
+            </div>
+          </div>
+
+          <% if current_user&.super_admin? %>
+            <div>
+              <div class="px-3 mb-2 text-[11px] font-bold uppercase tracking-wider text-slate-400">Administration</div>
+              <div class="space-y-1">
+                <%= nav_link.call("Admin Users", admin_users_path, controller_name == "users") %>
+              </div>
+            </div>
+          <% end %>
+        </nav>
+
+        <div class="p-4 border-t border-white/10 bg-black/20">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-9 h-9 rounded-full bg-brand-blue-light text-white flex items-center justify-center font-bold text-sm">
+              <%= current_user&.email.to_s.first&.upcase %>
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm font-semibold text-white truncate"><%= current_user&.full_name %></div>
+              <div class="text-xs text-slate-400 uppercase"><%= current_user&.role&.humanize %></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <%= link_to "View Site", root_path, target: "_blank", class: "text-center text-xs font-semibold py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors" %>
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "w-full text-center text-xs font-semibold py-2 px-3 rounded-lg bg-brand-red/80 hover:bg-brand-red text-white transition-colors cursor-pointer" %>
+          </div>
         </div>
-      </header>
+      </aside>
 
-      <div class="flex-1 overflow-auto p-8">
-        <% if notice %>
-          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6"><%= notice %></div>
-        <% end %>
-        <% if alert %>
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6"><%= alert %></div>
-        <% end %>
+      <!-- Main Area -->
+      <main class="flex-1 min-w-0 flex flex-col">
+        <header class="hidden lg:flex bg-white border-b border-slate-200 h-16 items-center justify-between px-8 sticky top-0 z-30">
+          <h1 class="font-heading text-xl font-bold text-slate-800"><%= yield(:header).presence || controller_name.humanize %></h1>
+          <div class="flex items-center gap-3">
+            <%= link_to "Send Email", new_admin_email_path, class: "px-4 py-2 text-xs font-semibold rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors" %>
+            <%= link_to "+ New Blog Post", new_admin_blog_post_path, class: "px-4 py-2 text-xs font-semibold rounded-full bg-brand-blue hover:bg-brand-blue-light text-white transition-colors" %>
+            <%= link_to "Public Site ↗", root_path, target: "_blank", class: "px-4 py-2 text-xs font-semibold rounded-full border border-slate-300 hover:bg-slate-50 text-slate-700 transition-colors" %>
+          </div>
+        </header>
 
-        <%= yield %>
-      </div>
-    </main>
+        <div class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          <% if notice.present? %>
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl mb-6 text-sm font-medium shadow-xs"><%= notice %></div>
+          <% end %>
+          <% if alert.present? %>
+            <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl mb-6 text-sm font-medium shadow-xs"><%= alert %></div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </main>
+    </div>
   </body>
 </html>

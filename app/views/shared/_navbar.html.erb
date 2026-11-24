@@ -2,41 +2,51 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-20">
       <div class="flex-shrink-0 flex items-center">
-        <%= link_to root_path, class: "flex items-center gap-2 group" do %>
-          <div class="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+        <%= link_to root_path, class: "flex items-center gap-2.5 group" do %>
+          <div class="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           </div>
           <span class="font-heading font-bold text-xl text-brand-blue-dark tracking-tight">NEWPAGE <span class="text-brand-red">INTEGRITY</span></span>
         <% end %>
       </div>
-      
-      <div class="hidden md:flex items-center space-x-8">
+
+      <div class="hidden lg:flex items-center space-x-7">
         <%= link_to "Home", root_path, class: "text-brand-gray-800 hover:text-brand-blue font-medium transition-colors" %>
         <%= link_to "About", about_path, class: "text-brand-gray-800 hover:text-brand-blue font-medium transition-colors" %>
-        
+
         <div class="relative group">
-          <button class="text-brand-gray-800 hover:text-brand-blue font-medium transition-colors flex items-center gap-1">
+          <button type="button" class="text-brand-gray-800 hover:text-brand-blue font-medium transition-colors flex items-center gap-1 py-2">
             Services
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
           </button>
-          <div class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-hover opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top border border-gray-100">
+          <div class="absolute left-0 mt-1 w-56 bg-white rounded-2xl shadow-hover opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-gray-100">
             <div class="py-2">
-              <%= link_to "Travel & Tours", services_path(category: 'travel'), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-blue" %>
-              <%= link_to "Visa Assistance", visa_information_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-blue" %>
-              <%= link_to "Study Abroad", study_abroad_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-blue" %>
-              <%= link_to "CAC Registration", cac_services_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-blue" %>
+              <%= link_to "All Services", services_path, class: "block px-4 py-2.5 text-sm font-semibold text-brand-blue hover:bg-slate-50" %>
+              <%= link_to "Travel & Tours", services_path(category: "travel"), class: "block px-4 py-2.5 text-sm text-gray-700 hover:bg-slate-50 hover:text-brand-blue" %>
+              <%= link_to "Visa Assistance", visa_information_path, class: "block px-4 py-2.5 text-sm text-gray-700 hover:bg-slate-50 hover:text-brand-blue" %>
+              <%= link_to "Study Abroad", study_abroad_path, class: "block px-4 py-2.5 text-sm text-gray-700 hover:bg-slate-50 hover:text-brand-blue" %>
+              <%= link_to "CAC Registration", cac_services_path, class: "block px-4 py-2.5 text-sm text-gray-700 hover:bg-slate-50 hover:text-brand-blue" %>
             </div>
           </div>
         </div>
 
         <%= link_to "Destinations", destinations_path, class: "text-brand-gray-800 hover:text-brand-blue font-medium transition-colors" %>
+        <%= link_to "Gallery", gallery_path, class: "text-brand-gray-800 hover:text-brand-blue font-medium transition-colors" %>
         <%= link_to "Blog", blog_path, class: "text-brand-gray-800 hover:text-brand-blue font-medium transition-colors" %>
-        <%= link_to "Contact", contact_path, class: "bg-brand-red hover:bg-brand-red-light text-white px-6 py-2.5 rounded-full font-medium shadow-md hover:shadow-lg transition-all" %>
+
+        <%= link_to search_path, aria: { label: "Search" }, class: "text-brand-gray-800 hover:text-brand-blue transition-colors p-1.5" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <% end %>
+
+        <%= link_to "Book Consultation", contact_path, class: "bg-brand-red hover:bg-brand-red-light text-white px-5 py-2.5 rounded-full font-semibold text-sm shadow-md hover:shadow-lg transition-all" %>
       </div>
 
       <!-- Mobile menu button -->
-      <div class="flex items-center md:hidden">
-        <button type="button" class="text-brand-gray-800 hover:text-brand-blue focus:outline-none" data-action="click->navbar#toggle">
+      <div class="flex items-center gap-3 lg:hidden">
+        <%= link_to search_path, aria: { label: "Search" }, class: "text-brand-gray-800 hover:text-brand-blue p-1.5" do %>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <% end %>
+        <button type="button" class="text-brand-gray-800 hover:text-brand-blue focus:outline-none p-2" data-action="click->navbar#toggle" aria-label="Toggle menu">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -46,17 +56,20 @@
   </div>
 
   <!-- Mobile menu -->
-  <div class="md:hidden hidden bg-white border-t border-gray-100 shadow-xl absolute w-full" data-navbar-target="menu">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <%= link_to "Home", root_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "About", about_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Travel Services", services_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Visa Information", visa_information_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Study Abroad", study_abroad_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "CAC Services", cac_services_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Destinations", destinations_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Blog", blog_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-gray-800 hover:bg-gray-50" %>
-      <%= link_to "Contact", contact_path, class: "block px-3 py-2 rounded-md text-base font-medium text-brand-red bg-red-50 hover:bg-red-100" %>
+  <div class="lg:hidden hidden bg-white border-t border-gray-100 shadow-xl absolute w-full" data-navbar-target="menu">
+    <div class="px-4 pt-3 pb-5 space-y-1">
+      <%= link_to "Home", root_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "About Us", about_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "All Services", services_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Visa Assistance", visa_information_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Study Abroad", study_abroad_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "CAC Services", cac_services_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Destinations", destinations_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Gallery", gallery_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Testimonials", testimonials_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Blog", blog_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "FAQs", faqs_path, class: "block px-3 py-2.5 rounded-xl text-base font-medium text-brand-gray-800 hover:bg-slate-50" %>
+      <%= link_to "Book Consultation", contact_path, class: "block text-center mt-3 px-4 py-3 rounded-xl text-base font-semibold text-white bg-brand-red hover:bg-brand-red-light" %>
     </div>
   </div>
 </nav>

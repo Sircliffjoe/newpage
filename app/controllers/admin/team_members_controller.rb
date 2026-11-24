@@ -1,15 +1,18 @@
 class Admin::TeamMembersController < Admin::BaseController
+  before_action :require_content_editor!
   before_action :set_team_member, only: [:show, :edit, :update, :destroy]
 
   def index
-    @team_members = TeamMember.order(:name)
+    @team_members = TeamMember.ordered
   end
 
   def show; end
 
   def new
-    @team_member = TeamMember.new
+    @team_member = TeamMember.new(published: true)
   end
+
+  def edit; end
 
   def create
     @team_member = TeamMember.new(team_member_params)
@@ -19,8 +22,6 @@ class Admin::TeamMembersController < Admin::BaseController
       render :new, status: :unprocessable_entity
     end
   end
-
-  def edit; end
 
   def update
     if @team_member.update(team_member_params)
@@ -42,6 +43,9 @@ class Admin::TeamMembersController < Admin::BaseController
   end
 
   def team_member_params
-    params.require(:team_member).permit(:name, :position, :bio, :image, :email, :phone, :linkedin, :twitter, :facebook)
+    params.require(:team_member).permit(
+      :name, :role, :bio, :image, :email, :phone,
+      :linkedin, :twitter, :facebook, :position, :published
+    )
   end
 end

@@ -1,0 +1,17 @@
+<section class="py-20 bg-white">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose max-w-none">
+    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-6">Privacy Policy</h1>
+    <p class="text-sm text-slate-500">Effective Date: <%= Time.current.strftime("%B %Y") %></p>
+    <% if @page&.rich_content&.present? %>
+      <%= @page.rich_content %>
+    <% else %>
+      <p>NewPage Integrity Travels &amp; Tours Limited respects your privacy and is committed to protecting the personal data you share with us when inquiring about travel bookings, visa assistance, study abroad admissions, or CAC corporate registrations.</p>
+      <h2>Information We Collect</h2>
+      <p>We collect contact details (name, email, phone number) and inquiry information voluntarily submitted through our website forms or WhatsApp consultations.</p>
+      <h2>How We Use Your Information</h2>
+      <p>Your details are used solely to respond to your consultation requests, process travel/visa/admission/CAC applications, and send relevant updates if you opt into our newsletter.</p>
+      <h2>Contact</h2>
+      <p>For privacy inquiries, email <a href="mailto:<%= site_setting('email', 'newpageintegritytravels@gmail.com') %>"><%= site_setting("email", "newpageintegritytravels@gmail.com") %></a>.</p>
+    <% end %>
+  </div>
+</section>

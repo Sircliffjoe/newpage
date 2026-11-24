@@ -1,0 +1,93 @@
+<% content_for :header, "Compose Email" %>
+
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h2 class="font-heading text-2xl font-bold text-slate-900">Send Email via Brevo</h2>
+    <p class="text-sm text-slate-500">Message individual clients or load a saved audience group in one click.</p>
+  </div>
+  <%= link_to "← Back to Email Logs", admin_emails_path, class: "text-sm font-semibold text-slate-600 hover:text-brand-blue" %>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6">
+    <%= form_with model: [:admin, @email], url: admin_emails_path, class: "space-y-5" do |f| %>
+      <div class="bg-blue-50 border border-blue-100 text-brand-blue rounded-xl p-4 text-xs">
+        <strong>Recipient Format:</strong> Enter one email per line — either <code class="font-mono">client@example.com</code> or <code class="font-mono">Full Name &lt;client@example.com&gt;</code>.
+      </div>
+
+      <div>
+        <%= f.label :recipients, "Recipients", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= text_area_tag "email[recipients]", @prefilled_recipients, id: "email_recipients", rows: 6, required: true,
+              placeholder: "client@example.com\nAdaeze Okafor <adaeze@example.com>",
+              class: "w-full rounded-xl border-slate-300 shadow-xs text-sm font-mono focus:border-brand-blue focus:ring-brand-blue" %>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <%= f.label :contact_type, "Category", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+          <%= f.select :contact_type, @contact_types.map { |t| [t.humanize, t] }, {}, class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+        </div>
+        <div>
+          <%= f.label :subject, "Subject", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+          <%= f.text_field :subject, required: true, placeholder: "e.g. Update on Your Visa Application", class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+        </div>
+      </div>
+
+      <div>
+        <%= f.label :body, "Message Body", class: "block text-sm font-semibold text-slate-700 mb-1" %>
+        <%= f.text_area :body, rows: 10, required: true, placeholder: "Write your message here...", class: "w-full rounded-xl border-slate-300 shadow-xs text-sm" %>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <%= f.submit "Send Email Now", class: "px-6 py-3 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-bold shadow-xs cursor-pointer" %>
+        <%= link_to "Cancel", admin_emails_path, class: "px-5 py-3 border border-slate-300 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-50" %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Quick Audience Loaders (WaffiHub-style) -->
+  <div class="space-y-5">
+    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6">
+      <h3 class="font-heading text-base font-bold text-slate-900 mb-4">Quick Audience Fill</h3>
+      <div class="space-y-3">
+        <button type="button" onclick="fillAudience('leads')" class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-sm font-semibold text-slate-700 transition-colors cursor-pointer">
+          All Leads (<%= @lead_emails.size %>)
+        </button>
+        <button type="button" onclick="fillAudience('visa')" class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-sm font-semibold text-slate-700 transition-colors cursor-pointer">
+          Visa Inquiries (<%= @visa_lead_emails.size %>)
+        </button>
+        <button type="button" onclick="fillAudience('study')" class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-sm font-semibold text-slate-700 transition-colors cursor-pointer">
+          Study Abroad Leads (<%= @study_lead_emails.size %>)
+        </button>
+        <button type="button" onclick="fillAudience('contacts')" class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-sm font-semibold text-slate-700 transition-colors cursor-pointer">
+          Contact Form Senders (<%= @contact_emails.size %>)
+        </button>
+        <button type="button" onclick="fillAudience('subscribers')" class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 hover:border-brand-blue hover:bg-blue-50/50 text-sm font-semibold text-slate-700 transition-colors cursor-pointer">
+          Newsletter Subscribers (<%= @subscriber_emails.size %>)
+        </button>
+      </div>
+    </div>
+
+    <div class="bg-slate-900 text-white rounded-2xl p-6 text-xs space-y-2">
+      <h4 class="font-heading font-bold text-sm text-white">Delivery Notes</h4>
+      <p class="text-slate-300">All emails are dispatched through the Brevo Transactional API and logged automatically for audit and follow-up.</p>
+      <p class="text-slate-400">Sender: <%= ENV.fetch("BREVO_SENDER_EMAIL", "info@newpageintegritytravels.com") %></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const audienceData = {
+    leads: <%= raw @lead_emails.map { |name, email| name.present? ? "#{name} <#{email}>" : email }.to_json %>,
+    visa: <%= raw @visa_lead_emails.map { |name, email| name.present? ? "#{name} <#{email}>" : email }.to_json %>,
+    study: <%= raw @study_lead_emails.map { |name, email| name.present? ? "#{name} <#{email}>" : email }.to_json %>,
+    contacts: <%= raw @contact_emails.map { |name, email| name.present? ? "#{name} <#{email}>" : email }.to_json %>,
+    subscribers: <%= raw @subscriber_emails.to_json %>
+  };
+
+  function fillAudience(key) {
+    const textarea = document.getElementById("email_recipients");
+    if (!textarea || !audienceData[key]) return;
+    textarea.value = audienceData[key].join("\n");
+  }
+</script>

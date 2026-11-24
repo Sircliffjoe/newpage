@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_23_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,8 +71,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.string "featured_image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "meta_title"
+    t.text "meta_description"
+    t.boolean "featured", default: false, null: false
     t.index ["author_id"], name: "index_blog_posts_on_author_id"
     t.index ["blog_category_id"], name: "index_blog_posts_on_blog_category_id"
+    t.index ["slug"], name: "index_blog_posts_on_slug", unique: true
   end
 
   create_table "contact_submissions", force: :cascade do |t|
@@ -98,6 +102,29 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "short_description"
+    t.boolean "visa_required", default: true, null: false
+    t.boolean "featured", default: false, null: false
+    t.index ["slug"], name: "index_destinations_on_slug", unique: true
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.string "recipient_email", null: false
+    t.string "recipient_name"
+    t.string "subject", null: false
+    t.text "body", null: false
+    t.string "contact_type", default: "manual", null: false
+    t.string "status", default: "pending", null: false
+    t.text "error_message"
+    t.string "provider_message_id"
+    t.bigint "sent_by_id"
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_type"], name: "index_emails_on_contact_type"
+    t.index ["recipient_email"], name: "index_emails_on_recipient_email"
+    t.index ["sent_by_id"], name: "index_emails_on_sent_by_id"
+    t.index ["status"], name: "index_emails_on_status"
   end
 
   create_table "faqs", force: :cascade do |t|
@@ -142,6 +169,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.string "source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "assigned_to_id"
+    t.index ["assigned_to_id"], name: "index_leads_on_assigned_to_id"
   end
 
   create_table "newsletter_subscribers", force: :cascade do |t|
@@ -150,6 +179,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.datetime "unsubscribed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_newsletter_subscribers_on_email", unique: true
   end
 
   create_table "notes", force: :cascade do |t|
@@ -168,6 +198,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.jsonb "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "page_name"
+    t.string "slug"
+    t.string "hero_title"
+    t.text "hero_subtitle"
+    t.string "meta_title"
+    t.text "meta_description"
+    t.text "content"
+    t.jsonb "settings", default: {}, null: false
+    t.index ["key"], name: "index_page_settings_on_key", unique: true
+    t.index ["slug"], name: "index_page_settings_on_slug", unique: true
   end
 
   create_table "services", force: :cascade do |t|
@@ -183,6 +223,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "short_description"
+    t.string "icon"
+    t.boolean "featured", default: false, null: false
+    t.index ["slug"], name: "index_services_on_slug", unique: true
   end
 
   create_table "team_members", force: :cascade do |t|
@@ -194,6 +238,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
     t.boolean "published"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "phone"
+    t.string "linkedin"
+    t.string "twitter"
+    t.string "facebook"
   end
 
   create_table "testimonials", force: :cascade do |t|
@@ -227,5 +276,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_22_091146) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "blog_posts", "blog_categories"
   add_foreign_key "blog_posts", "users", column: "author_id"
+  add_foreign_key "emails", "users", column: "sent_by_id"
+  add_foreign_key "leads", "users", column: "assigned_to_id"
   add_foreign_key "notes", "users", column: "author_id"
 end

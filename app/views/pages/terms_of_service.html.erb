@@ -1,0 +1,15 @@
+<section class="py-20 bg-white">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose max-w-none">
+    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-6">Terms of Service</h1>
+    <p class="text-sm text-slate-500">Effective Date: <%= Time.current.strftime("%B %Y") %></p>
+    <% if @page&.rich_content&.present? %>
+      <%= @page.rich_content %>
+    <% else %>
+      <p>By accessing <strong>newpageintegritytravels.com</strong> or engaging NewPage Integrity Travels &amp; Tours Limited for travel, visa, study abroad, or corporate registration services, you agree to these terms.</p>
+      <h2>Advisory &amp; Processing</h2>
+      <p>We provide professional documentation review, application support, and travel advisory. Final visa and admission decisions rest solely with the respective embassies, immigration authorities, and academic institutions.</p>
+      <h2>Client Responsibilities</h2>
+      <p>Clients are responsible for providing accurate, truthful, and complete documentation for all travel, visa, admission, and CAC filings.</p>
+    <% end %>
+  </div>
+</section>

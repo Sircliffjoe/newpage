@@ -1,0 +1,37 @@
+<% content_for :header, "Admin Users" %>
+
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h2 class="font-heading text-2xl font-bold text-slate-900">Admin &amp; Staff Accounts</h2>
+    <p class="text-sm text-slate-500">Manage Super Admins, Content Editors, and Staff accounts.</p>
+  </div>
+  <%= link_to "+ Add User", new_admin_user_path, class: "px-4 py-2.5 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-semibold" %>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+  <table class="min-w-full divide-y divide-slate-200 text-sm">
+    <thead class="bg-slate-50">
+      <tr>
+        <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Name</th>
+        <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Email</th>
+        <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Role</th>
+        <th class="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <% @users.each do |user| %>
+        <tr>
+          <td class="px-6 py-4 font-semibold text-slate-900"><%= user.full_name %></td>
+          <td class="px-6 py-4 text-slate-600"><%= user.email %></td>
+          <td class="px-6 py-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-brand-blue"><%= user.role.humanize %></span></td>
+          <td class="px-6 py-4 text-right space-x-3">
+            <%= link_to "Edit", edit_admin_user_path(user), class: "font-semibold text-brand-blue hover:underline" %>
+            <% unless user == current_user %>
+              <%= button_to "Delete", admin_user_path(user), method: :delete, data: { turbo_confirm: "Delete this user?" }, form: { class: "inline" }, class: "font-semibold text-red-600 hover:underline cursor-pointer" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,46 +1,67 @@
-<% content_for :title, "Photo Gallery | Newpage Integrity Travels & Tours" %>
+<% hero_bg = cms_image_url(@page&.hero_image, "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035&auto=format&fit=crop") %>
 
-<!-- Hero -->
-<section class="pt-28 pb-16 bg-white text-center">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-4">Our Gallery</h1>
-    <p class="text-gray-500 max-w-2xl mx-auto">A visual journey through successful visa approvals, memorable tours, and happy clients.</p>
-  </div>
-</section>
-
-<!-- Filters (Simple implementation, could be enhanced with Stimulus) -->
-<section class="py-4 bg-white border-b border-gray-100">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-wrap gap-3 justify-center">
-      <%= link_to "All Photos", gallery_path, class: "px-4 py-2 rounded-full text-sm font-medium #{params[:category].blank? ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors" %>
-      <% @categories.compact.each do |cat| %>
-        <%= link_to cat.humanize, gallery_path(category: cat), class: "px-4 py-2 rounded-full text-sm font-medium #{params[:category] == cat ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors" %>
-      <% end %>
+<div data-controller="lightbox" data-action="keydown@window->lightbox#keydown">
+  <!-- Hero -->
+  <section class="relative py-24 bg-brand-blue-dark text-center overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <img src="<%= hero_bg %>" alt="Gallery" class="w-full h-full object-cover opacity-25 mix-blend-overlay">
     </div>
-  </div>
-</section>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="font-heading text-4xl md:text-5xl font-bold text-white mb-4"><%= @page&.hero_title.presence || "Our Photo Gallery" %></h1>
+      <p class="text-blue-100 max-w-2xl mx-auto text-lg"><%= @page&.hero_subtitle.presence || "A visual journey through successful visa approvals, student departures, memorable tours, and our Warri office." %></p>
+    </div>
+  </section>
 
-<!-- Gallery Grid -->
-<section class="py-16 bg-brand-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <% if @gallery_images.any? %>
-      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-        <% @gallery_images.each do |image_record| %>
-          <% if image_record.image.attached? %>
-            <div class="relative group rounded-xl overflow-hidden shadow-sm break-inside-avoid">
-              <%= image_tag image_record.image, class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-500" %>
-              <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                <h4 class="text-white font-bold mb-1"><%= image_record.caption %></h4>
-                <span class="text-brand-blue-100 text-xs"><%= image_record.category&.humanize %></span>
-              </div>
-            </div>
-          <% end %>
+  <!-- Category Filters -->
+  <section class="py-5 bg-white border-b border-gray-100 sticky top-20 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap gap-2.5 justify-center">
+        <%= link_to "All Photos", gallery_path, class: "px-4 py-2 rounded-full text-sm font-semibold #{params[:category].blank? ? 'bg-brand-blue text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-colors" %>
+        <% @categories.each do |cat| %>
+          <%= link_to cat.humanize, gallery_path(category: cat), class: "px-4 py-2 rounded-full text-sm font-semibold #{params[:category] == cat ? 'bg-brand-blue text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-colors" %>
         <% end %>
       </div>
-    <% else %>
-      <div class="text-center py-20">
-        <h3 class="text-xl text-gray-400">No photos available yet.</h3>
-      </div>
-    <% end %>
+    </div>
+  </section>
+
+  <!-- Gallery Grid -->
+  <section class="py-16 bg-brand-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <% attached_images = @gallery_images.select { |img| img.image.attached? } %>
+      <% if attached_images.any? %>
+        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+          <% attached_images.each do |image_record| %>
+            <a href="<%= url_for(image_record.image) %>"
+               data-action="click->lightbox#open"
+               data-url="<%= url_for(image_record.image) %>"
+               data-caption="<%= [image_record.title, image_record.caption].compact_blank.join(' — ') %>"
+               class="block relative group rounded-2xl overflow-hidden shadow-soft break-inside-avoid bg-white">
+              <%= image_tag image_record.image, alt: image_record.title, loading: "lazy", class: "w-full h-auto transform group-hover:scale-105 transition-transform duration-500" %>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                <h4 class="text-white font-heading font-bold text-base"><%= image_record.title %></h4>
+                <% if image_record.caption.present? %>
+                  <p class="text-slate-200 text-xs mt-1"><%= image_record.caption %></p>
+                <% end %>
+                <span class="text-brand-red-light text-[11px] font-semibold uppercase mt-2"><%= image_record.category&.humanize %></span>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-20 bg-white rounded-2xl shadow-soft">
+          <h3 class="text-xl font-heading font-bold text-slate-700">Gallery Photos Coming Soon</h3>
+          <p class="text-slate-400 text-sm mt-2">Upload photos from the Admin CMS to showcase client journeys and tours here.</p>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <!-- Lightbox Modal -->
+  <div data-lightbox-target="modal" data-action="click->lightbox#close" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+    <div class="max-w-5xl w-full text-center" onclick="event.stopPropagation()">
+      <button type="button" data-action="click->lightbox#close" class="mb-4 ml-auto block text-white/80 hover:text-white text-sm font-semibold cursor-pointer">Close ✕</button>
+      <img data-lightbox-target="image" src="" alt="" class="max-h-[80vh] mx-auto rounded-xl shadow-2xl">
+      <p data-lightbox-target="caption" class="text-white/90 text-sm mt-4"></p>
+    </div>
   </div>
-</section>
+</div>

@@ -1,0 +1,31 @@
+<% content_for :header, "Email Details" %>
+
+<div class="flex items-center justify-between mb-6">
+  <h2 class="font-heading text-2xl font-bold text-slate-900"><%= @email.subject %></h2>
+  <%= link_to "← Back to Emails", admin_emails_path, class: "text-sm font-semibold text-slate-600 hover:text-brand-blue" %>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 space-y-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm border-b border-slate-100 pb-6">
+    <div><span class="text-slate-400">Recipient:</span> <strong class="text-slate-900"><%= @email.recipient_name %> (<%= @email.recipient_email %>)</strong></div>
+    <div><span class="text-slate-400">Status:</span> <strong class="uppercase"><%= @email.status %></strong></div>
+    <div><span class="text-slate-400">Category:</span> <strong><%= @email.contact_type.humanize %></strong></div>
+    <div><span class="text-slate-400">Sent At:</span> <strong><%= (@email.sent_at || @email.created_at).strftime("%B %d, %Y at %H:%M") %></strong></div>
+    <% if @email.sent_by.present? %>
+      <div><span class="text-slate-400">Sent By:</span> <strong><%= @email.sent_by.full_name %></strong></div>
+    <% end %>
+    <% if @email.provider_message_id.present? %>
+      <div><span class="text-slate-400">Brevo Message ID:</span> <code class="text-xs font-mono"><%= @email.provider_message_id %></code></div>
+    <% end %>
+  </div>
+
+  <% if @email.error_message.present? %>
+    <div class="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-sm">
+      <strong>Delivery Error:</strong> <%= @email.error_message %>
+    </div>
+  <% end %>
+
+  <div class="prose max-w-none text-slate-700">
+    <%= simple_format(@email.body) %>
+  </div>
+</div>

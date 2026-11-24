@@ -1,14 +1,15 @@
 class Admin::ServicesController < Admin::BaseController
+  before_action :require_content_editor!
   before_action :set_service, only: [:show, :edit, :update, :destroy]
 
   def index
-    @services = Service.order(position: :asc)
+    @services = Service.ordered
   end
 
   def show; end
 
   def new
-    @service = Service.new
+    @service = Service.new(published: true)
   end
 
   def edit; end
@@ -38,10 +39,13 @@ class Admin::ServicesController < Admin::BaseController
   private
 
   def set_service
-    @service = Service.find(params[:id])
+    @service = Service.friendly.find(params[:id])
   end
 
   def service_params
-    params.require(:service).permit(:title, :category, :description, :hero_image, :benefits, :requirements, :faq, :position, :published)
+    params.require(:service).permit(
+      :title, :slug, :category, :short_description, :description,
+      :hero_image, :icon, :benefits, :requirements, :position, :published, :featured
+    )
   end
 end

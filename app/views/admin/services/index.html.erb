@@ -27,8 +27,8 @@
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= service.active? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
-                <%= service.active? ? 'Active' : 'Inactive' %>
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= service.published? ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' %>">
+                <%= service.published? ? 'Published' : 'Draft' %>
               </span>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

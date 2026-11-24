@@ -1,29 +1,38 @@
-<div class="p-6">
-  <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold text-gray-900">Newsletter Subscribers</h1>
-    <button onclick="window.print()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Export/Print</button>
-  </div>
+<% content_for :header, "Newsletter Subscribers" %>
 
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subscribed Date</th>
-          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <% @newsletter_subscribers.each do |subscriber| %>
-          <tr>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= subscriber.email %></td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= subscriber.created_at.strftime("%b %d, %Y") %></td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <%= button_to "Remove", admin_newsletter_subscriber_path(subscriber), method: :delete, class: "text-red-600 hover:text-red-900 inline", form: { data: { turbo_confirm: "Are you sure?" } } %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+  <div>
+    <h2 class="font-heading text-2xl font-bold text-slate-900">Newsletter Subscribers (<%= @newsletter_subscribers.size %>)</h2>
+    <p class="text-sm text-slate-500">Export your mailing list or send updates directly via Brevo.</p>
   </div>
+  <div class="flex gap-2">
+    <%= link_to "Export CSV", export_admin_newsletter_subscribers_path, class: "px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-xl text-sm font-semibold" %>
+    <%= link_to "Email Subscribers", new_admin_email_path(contact_type: "newsletter"), class: "px-4 py-2.5 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-semibold" %>
+  </div>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+  <table class="min-w-full divide-y divide-slate-200 text-sm">
+    <thead class="bg-slate-50">
+      <tr>
+        <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Email Address</th>
+        <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase">Subscribed On</th>
+        <th class="px-6 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      <% @newsletter_subscribers.each do |sub| %>
+        <tr>
+          <td class="px-6 py-4 font-medium text-slate-900"><%= sub.email %></td>
+          <td class="px-6 py-4 text-xs text-slate-500"><%= (sub.subscribed_at || sub.created_at).strftime("%b %d, %Y %H:%M") %></td>
+          <td class="px-6 py-4 text-right">
+            <%= button_to "Remove", admin_newsletter_subscriber_path(sub), method: :delete, data: { turbo_confirm: "Remove subscriber?" }, form: { class: "inline" }, class: "text-sm font-semibold text-red-600 hover:underline cursor-pointer" %>
+          </td>
+        </tr>
+      <% end %>
+      <% if @newsletter_subscribers.empty? %>
+        <tr><td colspan="3" class="px-6 py-12 text-center text-slate-500">No newsletter subscribers yet.</td></tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
