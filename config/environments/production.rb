@@ -23,10 +23,10 @@ Rails.application.configure do
   config.silence_healthcheck_path = "/up"
   config.active_support.report_deprecations = false
 
-  # Rails 8 Solid Cache & Solid Queue
+  # Rails 8 Solid Cache & Solid Queue (backed by primary Postgres DB)
   config.cache_store = :solid_cache_store
   config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :queue } }
+  config.solid_queue.connects_to = { database: { writing: :primary } }
 
   # Brevo Transactional Email API delivery
   config.action_mailer.raise_delivery_errors = true

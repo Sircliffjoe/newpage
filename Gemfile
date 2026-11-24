@@ -28,6 +28,7 @@ gem "friendly_id", "~> 5.5"
 gem "meta-tags"
 gem "sitemap_generator"
 gem "image_processing", "~> 2.0", ">= 2.0.1"
+gem "ruby-vips", "~> 2.3"
 
 # UI & Utilities
 gem "pagy"
