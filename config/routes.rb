@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   get "/terms-of-service", to: "pages#terms_of_service", as: :terms_of_service
   get "/search", to: "search#index", as: :search
 
-  resources :services, only: [:index, :show], param: :slug
-  resources :destinations, only: [:index, :show], param: :slug
+  resources :services, only: [ :index, :show ], param: :slug
+  resources :destinations, only: [ :index, :show ], param: :slug
 
   # Blog
   get "/blog", to: "blog_posts#index", as: :blog
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   # Contact & Newsletter
   get "/contact", to: "contacts#new", as: :contact
   post "/contact", to: "contacts#create", as: :contacts
-  resources :newsletter_subscribers, only: [:create]
+  resources :newsletter_subscribers, only: [ :create ]
 
   # Admin CMS & Management Center
   namespace :admin do
@@ -42,18 +42,18 @@ Rails.application.routes.draw do
     resources :faqs
     resources :team_members
     resources :page_settings
-    resources :users, except: [:show]
-    resources :emails, only: [:index, :show, :new, :create]
+    resources :users, except: [ :show ]
+    resources :emails, only: [ :index, :show, :new, :create ]
 
     resources :leads do
       collection do
         get :export
       end
-      resources :notes, only: [:create, :destroy]
+      resources :notes, only: [ :create, :destroy ]
     end
 
-    resources :contact_submissions, only: [:index, :show, :destroy]
-    resources :newsletter_subscribers, only: [:index, :destroy] do
+    resources :contact_submissions, only: [ :index, :show, :destroy ]
+    resources :newsletter_subscribers, only: [ :index, :destroy ] do
       collection do
         get :export
       end

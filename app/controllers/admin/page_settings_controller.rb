@@ -1,6 +1,6 @@
 class Admin::PageSettingsController < Admin::BaseController
   before_action :require_content_editor!
-  before_action :set_page_setting, only: [:edit, :update, :destroy]
+  before_action :set_page_setting, only: [ :edit, :update, :destroy ]
 
   def index
     @page_settings = PageSetting.order(:page_name)

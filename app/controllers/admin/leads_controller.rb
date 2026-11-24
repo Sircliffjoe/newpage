@@ -1,7 +1,7 @@
 require "csv"
 
 class Admin::LeadsController < Admin::BaseController
-  before_action :set_lead, only: [:show, :edit, :update, :destroy]
+  before_action :set_lead, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @leads = Lead.includes(:assigned_to).order(created_at: :desc)
@@ -36,9 +36,19 @@ class Admin::LeadsController < Admin::BaseController
   def export
     leads = Lead.order(created_at: :desc)
     csv_data = CSV.generate(headers: true) do |csv|
-      csv << ["ID", "Name", "Email", "Phone", "Service Type", "Status", "Source", "Message", "Created At"]
+      csv << [ "ID", "Name", "Email", "Phone", "Service Type", "Status", "Source", "Message", "Created At" ]
       leads.each do |lead|
-        csv << [lead.id, lead.name, lead.email, lead.phone, lead.service_type, lead.status, lead.source, lead.message, lead.created_at.iso8601]
+        csv << [
+          lead.id,
+          sanitize_csv_cell(lead.name),
+          sanitize_csv_cell(lead.email),
+          sanitize_csv_cell(lead.phone),
+          lead.service_type,
+          lead.status,
+          sanitize_csv_cell(lead.source),
+          sanitize_csv_cell(lead.message),
+          lead.created_at.iso8601
+        ]
       end
     end
 
@@ -46,6 +56,11 @@ class Admin::LeadsController < Admin::BaseController
   end
 
   private
+
+  def sanitize_csv_cell(value)
+    str = value.to_s
+    str.match?(/\A[=+\-@\t\r]/) ? "'#{str}" : str
+  end
 
   def set_lead
     @lead = Lead.find(params[:id])

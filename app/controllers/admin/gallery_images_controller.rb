@@ -1,6 +1,6 @@
 class Admin::GalleryImagesController < Admin::BaseController
   before_action :require_content_editor!
-  before_action :set_gallery_image, only: [:edit, :update, :destroy]
+  before_action :set_gallery_image, only: [ :edit, :update, :destroy ]
 
   def index
     @gallery_images = GalleryImage.ordered

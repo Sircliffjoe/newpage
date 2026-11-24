@@ -1,5 +1,5 @@
 class Admin::ContactSubmissionsController < Admin::BaseController
-  before_action :set_contact_submission, only: [:show, :destroy]
+  before_action :set_contact_submission, only: [ :show, :destroy ]
 
   def index
     @contact_submissions = ContactSubmission.order(created_at: :desc)

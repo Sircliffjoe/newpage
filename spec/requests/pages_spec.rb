@@ -1,39 +1,38 @@
 require 'rails_helper'
 
 RSpec.describe "Pages", type: :request do
-  describe "GET /home" do
+  describe "GET /" do
     it "returns http success" do
-      get "/pages/home"
+      get root_path
       expect(response).to have_http_status(:success)
     end
   end
 
   describe "GET /about" do
     it "returns http success" do
-      get "/pages/about"
+      get about_path
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET /visa_information" do
+  describe "GET /visa-information" do
     it "returns http success" do
-      get "/pages/visa_information"
+      get visa_information_path
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET /study_abroad" do
+  describe "GET /study-abroad" do
     it "returns http success" do
-      get "/pages/study_abroad"
+      get study_abroad_path
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET /cac_services" do
+  describe "GET /cac-services" do
     it "returns http success" do
-      get "/pages/cac_services"
+      get cac_services_path
       expect(response).to have_http_status(:success)
     end
   end
-
 end

@@ -1,15 +1,11 @@
 <% content_for :title, "Travel Destinations | Newpage Integrity Travels & Tours" %>
 
-<!-- Hero -->
-<section class="relative py-24 bg-brand-blue-dark">
-  <div class="absolute inset-0 z-0">
-    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035&auto=format&fit=crop" alt="World travel" class="w-full h-full object-cover opacity-30 mix-blend-overlay">
-  </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6">Explore Destinations</h1>
-    <p class="text-xl text-gray-300 max-w-3xl mx-auto">Discover top travel and study destinations across the globe. Your next adventure awaits.</p>
-  </div>
-</section>
+<%= render "shared/page_header",
+  title: "Explore Destinations",
+  subtitle: "Discover top travel, residency, and international study destinations across the globe with tailored guidance.",
+  eyebrow: "Global Reach",
+  bg_image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035&auto=format&fit=crop",
+  breadcrumbs: [["Home", root_path], ["Destinations", nil]] %>
 
 <!-- Destinations Grid -->
 <section class="py-20 bg-brand-gray-50">

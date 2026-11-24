@@ -1,5 +1,7 @@
 class Admin::EmailsController < Admin::BaseController
-  before_action :set_email, only: [:show]
+  MAX_BATCH_RECIPIENTS = 200
+
+  before_action :set_email, only: [ :show ]
 
   def index
     @pagy, @emails = pagy(:offset, Email.includes(:sent_by).recent, limit: 20)
@@ -20,11 +22,11 @@ class Admin::EmailsController < Admin::BaseController
     )
     @prefilled_recipients = params[:to].presence || ""
     @contact_types = Email.contact_types.keys
-    @lead_emails = Lead.where.not(email: [nil, ""]).distinct.pluck(:name, :email)
-    @contact_emails = ContactSubmission.where.not(email: [nil, ""]).distinct.pluck(:name, :email)
+    @lead_emails = Lead.where.not(email: [ nil, "" ]).distinct.pluck(:name, :email)
+    @contact_emails = ContactSubmission.where.not(email: [ nil, "" ]).distinct.pluck(:name, :email)
     @subscriber_emails = NewsletterSubscriber.active.distinct.pluck(:email)
-    @visa_lead_emails = Lead.where(service_type: :visa).where.not(email: [nil, ""]).distinct.pluck(:name, :email)
-    @study_lead_emails = Lead.where(service_type: :study_abroad).where.not(email: [nil, ""]).distinct.pluck(:name, :email)
+    @visa_lead_emails = Lead.where(service_type: :visa).where.not(email: [ nil, "" ]).distinct.pluck(:name, :email)
+    @study_lead_emails = Lead.where(service_type: :study_abroad).where.not(email: [ nil, "" ]).distinct.pluck(:name, :email)
   end
 
   def create
@@ -35,6 +37,11 @@ class Admin::EmailsController < Admin::BaseController
 
     if recipients.empty? || subject.blank? || body.blank?
       redirect_to new_admin_email_path, alert: "Please provide at least one valid recipient, a subject, and a message body."
+      return
+    end
+
+    if recipients.size > MAX_BATCH_RECIPIENTS
+      redirect_to new_admin_email_path, alert: "Too many recipients in one batch (maximum #{MAX_BATCH_RECIPIENTS} per send)."
       return
     end
 

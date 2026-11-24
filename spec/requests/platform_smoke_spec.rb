@@ -69,6 +69,72 @@ RSpec.describe "NewPage Integrity Platform & CMS", type: :request do
         post newsletter_subscribers_path, params: { newsletter_subscriber: { email: "traveler@example.com" } }
       }.to change(NewsletterSubscriber, :count).by(1)
     end
+
+    it "blocks bot submissions via honeypot, fast timing, and URL spam" do
+      expect {
+        post contacts_path, params: {
+          website_url: "https://spambot.example",
+          contact_submission: { name: "Bot", email: "bot@example.com", message: "Buy cheap pills now" }
+        }
+      }.not_to change(ContactSubmission, :count)
+
+      expect {
+        post newsletter_subscribers_path, params: {
+          website_url: "https://spambot.example",
+          newsletter_subscriber: { email: "bot@example.com" }
+        }
+      }.not_to change(NewsletterSubscriber, :count)
+
+      fast_token = Rails.application.message_verifier(:form_spam_protection).generate(Time.current.to_i)
+      expect {
+        post contacts_path, params: {
+          _form_loaded_at: fast_token,
+          contact_submission: { name: "SpeedBot", email: "speed@example.com", message: "Instant form post" }
+        }
+      }.not_to change(ContactSubmission, :count)
+
+      expect {
+        post contacts_path, params: {
+          contact_submission: {
+            name: "LinkSpammer",
+            email: "spam@example.com",
+            message: "Visit https://a.com https://b.com https://c.com https://d.com"
+          }
+        }
+      }.not_to change(ContactSubmission, :count)
+    end
+
+    it "hides draft blog posts and unpublished destinations and handles invalid blog category params" do
+      draft_post = BlogPost.create!(title: "Secret Draft", blog_category: category, author: admin, status: :draft, excerpt: "Draft")
+      hidden_dest = Destination.create!(name: "Hidden Place", country_code: "ZZ", category: :travel, published: false)
+
+      get blog_post_path(slug: draft_post.slug)
+      expect(response).to have_http_status(:not_found)
+
+      get destination_path(slug: hidden_dest.slug)
+      expect(response).to have_http_status(:not_found)
+
+      get blog_path(category: "not-a-number")
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "Admin Auth pages" do
+    it "renders the styled admin login and password reset pages" do
+      get new_user_session_path
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Admin Sign In")
+      expect(response.body).to include("Management Center")
+
+      get new_user_password_path
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Reset Password")
+    end
+
+    it "redirects to the admin dashboard after signing in" do
+      post user_session_path, params: { user: { email: admin.email, password: "password123" } }
+      expect(response).to redirect_to(admin_root_path)
+    end
   end
 
   describe "Admin CMS & Email Center" do

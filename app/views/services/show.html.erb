@@ -1,81 +1,228 @@
-<% content_for :title, "#{@service.title} | Newpage Integrity Travels & Tours" %>
+<% service_fallbacks = {
+  "travel" => "https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=1400&auto=format&fit=crop",
+  "visa" => "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1400&auto=format&fit=crop",
+  "study_abroad" => "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1400&auto=format&fit=crop",
+  "cac" => "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1400&auto=format&fit=crop"
+} %>
+<% hero_photo = @service.hero_image.attached? ? url_for(@service.hero_image) : (service_fallbacks[@service.category.to_s] || service_fallbacks["travel"]) %>
 
-<!-- Hero -->
-<section class="relative py-24 bg-brand-blue-dark">
-  <% if @service.hero_image.attached? %>
-    <div class="absolute inset-0 z-0">
-      <%= image_tag @service.hero_image, class: "w-full h-full object-cover opacity-20 mix-blend-overlay" %>
-    </div>
-  <% end %>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <span class="inline-block px-4 py-1 rounded-full bg-brand-red/20 text-brand-red-light border border-brand-red/30 text-sm font-semibold mb-4"><%= @service.category.humanize %></span>
-    <h1 class="font-heading text-4xl md:text-5xl font-bold text-white mb-4"><%= @service.title %></h1>
+<%= render layout: "shared/page_header", locals: {
+  title: @service.title,
+  subtitle: @service.short_description.presence,
+  eyebrow: @service.featured? ? "#{@service.category.humanize} • Popular Service" : @service.category.humanize,
+  bg_image: hero_photo,
+  align: :left,
+  compact: true,
+  breadcrumbs: [
+    ["Home", root_path],
+    ["Services", services_path],
+    [@service.category.humanize, services_path(category: @service.category)],
+    [@service.title, nil]
+  ]
+} do %>
+  <div class="flex flex-wrap gap-3.5">
+    <a href="#service-inquiry" class="px-7 py-3.5 rounded-full bg-brand-red hover:bg-brand-red-light text-white font-semibold text-sm shadow-lg shadow-brand-red/30 transition-all">
+      Request This Service
+    </a>
+    <a href="<%= whatsapp_link("Hello NewPage Integrity Travels, I am interested in your #{@service.title} service.") %>" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg transition-all">
+      Chat on WhatsApp
+    </a>
   </div>
-</section>
+<% end %>
 
-<!-- Content -->
-<section class="py-16 bg-white">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="prose prose-lg max-w-none mb-12">
-      <%= @service.description %>
-    </div>
+<!-- Main 2-Column Content -->
+<section class="py-16 lg:py-20 bg-brand-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <!-- Left Column: Visual, Overview, Benefits, Requirements, FAQs -->
+      <div class="lg:col-span-8 space-y-8">
+        <!-- Featured Image -->
+        <div class="rounded-3xl overflow-hidden shadow-soft border border-slate-200/70 bg-white">
+          <img src="<%= hero_photo %>" alt="<%= @service.title %>" class="w-full h-72 sm:h-96 object-cover">
+        </div>
 
-    <% if @service.benefits.present? %>
-      <div class="bg-brand-gray-50 rounded-2xl p-8 mb-8">
-        <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mb-6">Benefits</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <% @service.benefits.split("\n").reject(&:blank?).each do |benefit| %>
-            <div class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-              <span class="text-gray-700"><%= benefit.strip %></span>
+        <!-- Overview -->
+        <div class="bg-white rounded-3xl p-7 sm:p-10 shadow-soft border border-slate-100">
+          <span class="text-brand-red font-semibold text-xs uppercase tracking-wider">Service Overview</span>
+          <h2 class="font-heading text-2xl sm:text-3xl font-bold text-brand-gray-900 mt-1 mb-5">About <%= @service.title %></h2>
+          <div class="prose prose-slate prose-lg max-w-none text-slate-700 leading-relaxed">
+            <% if @service.description.present? %>
+              <%= @service.description %>
+            <% elsif @service.short_description.present? %>
+              <p><%= @service.short_description %></p>
+            <% else %>
+              <p>Our experienced consultants provide end-to-end support for <strong><%= @service.title %></strong>, ensuring accurate documentation, transparent timelines, and responsive communication from start to finish.</p>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Key Benefits -->
+        <% if @service.benefits.present? %>
+          <% benefit_items = @service.benefits.split("\n").map(&:strip).reject(&:blank?) %>
+          <% if benefit_items.any? %>
+            <div class="bg-white rounded-3xl p-7 sm:p-10 shadow-soft border border-slate-100">
+              <span class="text-emerald-600 font-semibold text-xs uppercase tracking-wider">Why Choose This</span>
+              <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mt-1 mb-6">Key Benefits</h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <% benefit_items.each do |benefit| %>
+                  <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100">
+                    <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center flex-shrink-0 mt-0.5 text-xs font-bold">✓</div>
+                    <span class="text-slate-700 text-sm leading-relaxed font-medium"><%= benefit %></span>
+                  </div>
+                <% end %>
+              </div>
             </div>
           <% end %>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
 
-    <% if @service.requirements.present? %>
-      <div class="bg-blue-50 rounded-2xl p-8 mb-8">
-        <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mb-6">Requirements</h2>
-        <ul class="space-y-3">
-          <% @service.requirements.split("\n").reject(&:blank?).each do |req| %>
-            <li class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-brand-blue mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-              <span class="text-gray-700"><%= req.strip %></span>
-            </li>
+        <!-- Requirements -->
+        <% if @service.requirements.present? %>
+          <% requirement_items = @service.requirements.split("\n").map(&:strip).reject(&:blank?) %>
+          <% if requirement_items.any? %>
+            <div class="bg-white rounded-3xl p-7 sm:p-10 shadow-soft border border-slate-100">
+              <span class="text-brand-blue font-semibold text-xs uppercase tracking-wider">Preparation Checklist</span>
+              <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mt-1 mb-6">Requirements &amp; Documents</h2>
+              <ul class="space-y-3">
+                <% requirement_items.each_with_index do |req, idx| %>
+                  <li class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                    <span class="w-6 h-6 rounded-lg bg-brand-blue text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5"><%= idx + 1 %></span>
+                    <span class="text-slate-700 text-sm leading-relaxed"><%= req %></span>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
           <% end %>
-        </ul>
-      </div>
-    <% end %>
+        <% end %>
 
-    <!-- CTA -->
-    <div class="bg-brand-blue rounded-2xl p-8 text-center text-white">
-      <h3 class="font-heading text-2xl font-bold mb-4">Interested in this service?</h3>
-      <p class="mb-6 opacity-90">Let's discuss your needs. Book a free consultation or chat with us directly.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <%= link_to "Book Consultation", contact_path(subject: @service.title), class: "bg-white text-brand-blue font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors" %>
-        <a href="https://wa.me/2348038656409?text=Hello,%20I%20am%20interested%20in%20your%20<%= CGI.escape(@service.title) %>%20service." target="_blank" class="bg-[#25D366] text-white font-bold py-3 px-8 rounded-full hover:bg-[#20b858] transition-colors flex items-center justify-center gap-2">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771z"/></svg>
-          WhatsApp Us
-        </a>
+        <!-- FAQs -->
+        <% if @faqs.any? %>
+          <div class="bg-white rounded-3xl p-7 sm:p-10 shadow-soft border border-slate-100">
+            <span class="text-brand-red font-semibold text-xs uppercase tracking-wider">Common Questions</span>
+            <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mt-1 mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-3">
+              <% @faqs.each do |faq| %>
+                <details class="group rounded-2xl border border-slate-200/80 bg-slate-50/70 open:bg-white open:shadow-xs transition-all">
+                  <summary class="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer font-heading font-semibold text-slate-900 text-sm sm:text-base list-none">
+                    <span><%= faq.question %></span>
+                    <span class="text-brand-blue group-open:rotate-45 transition-transform text-xl leading-none font-normal">+</span>
+                  </summary>
+                  <div class="px-5 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                    <%= simple_format(faq.answer) %>
+                  </div>
+                </details>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
+
+      <!-- Right Sticky Sidebar: Quick Inquiry Form & Direct Support -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-28" id="service-inquiry">
+        <!-- Quick Inquiry Form -->
+        <div class="bg-white rounded-3xl p-7 shadow-soft border border-slate-200/80">
+          <span class="inline-block px-3 py-1 rounded-full bg-brand-red/10 text-brand-red text-xs font-bold uppercase tracking-wider mb-3">Quick Inquiry</span>
+          <h3 class="font-heading text-xl font-bold text-brand-gray-900 mb-1.5">Request <%= @service.title %></h3>
+          <p class="text-slate-500 text-xs mb-5">Leave your details and a dedicated consultant will reach out within 24 hours.</p>
+
+          <%= form_with model: ContactSubmission.new(subject: @service.title), url: contacts_path, class: "space-y-4" do |f| %>
+            <%= spam_protection_fields %>
+            <%= f.hidden_field :subject, value: @service.title %>
+
+            <div>
+              <%= f.label :name, "Full Name", class: "block text-xs font-semibold text-slate-700 mb-1" %>
+              <%= f.text_field :name, required: true, placeholder: "Your full name",
+                  class: "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none" %>
+            </div>
+
+            <div>
+              <%= f.label :email, "Email Address", class: "block text-xs font-semibold text-slate-700 mb-1" %>
+              <%= f.email_field :email, required: true, placeholder: "you@example.com",
+                  class: "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none" %>
+            </div>
+
+            <div>
+              <%= f.label :phone, "Phone / WhatsApp Number", class: "block text-xs font-semibold text-slate-700 mb-1" %>
+              <%= f.telephone_field :phone, required: true, placeholder: "+234 800 000 0000",
+                  class: "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none" %>
+            </div>
+
+            <div>
+              <%= f.label :message, "Tell us about your request", class: "block text-xs font-semibold text-slate-700 mb-1" %>
+              <%= f.text_area :message, rows: 3, required: true, placeholder: "Share your preferred timeline or questions...",
+                  class: "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none" %>
+            </div>
+
+            <%= f.submit "Send Inquiry", class: "w-full py-3 px-5 rounded-xl bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold text-sm shadow-md transition-colors cursor-pointer" %>
+          <% end %>
+
+          <div class="mt-4 pt-4 border-t border-slate-100 text-center">
+            <a href="<%= whatsapp_link("Hello NewPage Integrity Travels, I am interested in your #{@service.title} service.") %>" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-colors">
+              Chat Directly on WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- Direct Contact & Trust Card -->
+        <div class="bg-brand-blue-dark text-white rounded-3xl p-7 shadow-soft">
+          <h4 class="font-heading font-bold text-lg mb-4">Need Immediate Assistance?</h4>
+          <ul class="space-y-3 text-sm text-slate-300 mb-6">
+            <li class="flex items-start gap-2.5">
+              <span class="text-brand-red-light">📞</span>
+              <span><%= site_setting("phone", "+234 803 865 6409") %></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="text-brand-red-light">✉️</span>
+              <span class="break-all"><%= site_setting("email", "newpageintegritytravels@gmail.com") %></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="text-brand-red-light">📍</span>
+              <span><%= site_setting("address", "Top Floor, No. 4 Airport Road, Opp. Kosini Junction, Warri, Delta State.") %></span>
+            </li>
+          </ul>
+          <div class="pt-4 border-t border-white/10 space-y-2 text-xs text-slate-300">
+            <div class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Transparent, zero-hidden-fee pricing</div>
+            <div class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Dedicated personal consultant</div>
+            <div class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Fast turnaround &amp; regular updates</div>
+          </div>
+        </div>
+      </aside>
     </div>
   </div>
 </section>
 
 <!-- Related Services -->
 <% if @related_services.any? %>
-  <section class="py-16 bg-brand-gray-50">
+  <section class="py-20 bg-white border-t border-slate-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="font-heading text-2xl font-bold text-brand-gray-900 mb-8">Related Services</h2>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+        <div>
+          <span class="text-brand-red font-semibold text-xs uppercase tracking-wider">Explore More</span>
+          <h2 class="font-heading text-2xl sm:text-3xl font-bold text-brand-gray-900 mt-1">Related <%= @service.category.humanize %> Services</h2>
+        </div>
+        <%= link_to "View All Services →", services_path, class: "text-brand-blue font-semibold text-sm hover:text-brand-red transition-colors" %>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <% @related_services.each do |service| %>
-          <div class="bg-white rounded-2xl shadow-soft p-6 hover:-translate-y-1 transition-transform duration-300">
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-brand-blue/10 text-brand-blue mb-3"><%= service.category.humanize %></span>
-            <h3 class="font-heading font-bold text-lg text-brand-gray-900 mb-2"><%= service.title %></h3>
-            <p class="text-gray-500 text-sm mb-4"><%= strip_tags(service.description.to_s).truncate(80) %></p>
-            <%= link_to "View Details →", service_path(slug: service.slug), class: "text-brand-blue font-semibold text-sm" %>
-          </div>
+          <article class="bg-brand-gray-50 rounded-3xl shadow-soft border border-slate-100 overflow-hidden group hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <div class="relative h-44 overflow-hidden bg-brand-blue-dark">
+              <% if service.hero_image.attached? %>
+                <%= image_tag service.hero_image, alt: service.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+              <% else %>
+                <img src="<%= service_fallbacks[service.category.to_s] || service_fallbacks['travel'] %>" alt="<%= service.title %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <% end %>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-bold bg-white/95 text-brand-blue"><%= service.category.humanize %></span>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-lg text-brand-gray-900 mb-2 group-hover:text-brand-blue transition-colors">
+                  <%= link_to service.title, service_path(slug: service.slug) %>
+                </h3>
+                <p class="text-slate-600 text-sm mb-4 line-clamp-2"><%= service.short_description.presence || strip_tags(service.description.to_s).truncate(95) %></p>
+              </div>
+              <%= link_to "View Details →", service_path(slug: service.slug), class: "text-brand-blue font-semibold text-sm hover:text-brand-red transition-colors" %>
+            </div>
+          </article>
         <% end %>
       </div>
     </div>

@@ -9,6 +9,6 @@ class User < ApplicationRecord
   has_many :assigned_leads, class_name: "Lead", foreign_key: :assigned_to_id, dependent: :nullify
 
   def full_name
-    [first_name, last_name].compact_blank.join(" ").presence || email
+    [ first_name, last_name ].compact_blank.join(" ").presence || email
   end
 end

@@ -43,8 +43,8 @@
           <div>
             <dt class="text-sm font-medium text-gray-500">LinkedIn</dt>
             <dd class="mt-1 text-sm">
-              <% if @team_member.linkedin.present? %>
-                <%= link_to "View Profile", @team_member.linkedin, target: "_blank", class: "text-blue-600 hover:underline" %>
+              <% if (linkedin_url = safe_external_url(@team_member.linkedin)) %>
+                <%= link_to "View Profile", linkedin_url, target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:underline" %>
               <% else %>
                 <span class="text-gray-400">Not provided</span>
               <% end %>
@@ -53,8 +53,8 @@
           <div>
             <dt class="text-sm font-medium text-gray-500">Twitter</dt>
             <dd class="mt-1 text-sm">
-              <% if @team_member.twitter.present? %>
-                <%= link_to "View Profile", @team_member.twitter, target: "_blank", class: "text-blue-600 hover:underline" %>
+              <% if (twitter_url = safe_external_url(@team_member.twitter)) %>
+                <%= link_to "View Profile", twitter_url, target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:underline" %>
               <% else %>
                 <span class="text-gray-400">Not provided</span>
               <% end %>
@@ -63,8 +63,8 @@
           <div>
             <dt class="text-sm font-medium text-gray-500">Facebook</dt>
             <dd class="mt-1 text-sm">
-              <% if @team_member.facebook.present? %>
-                <%= link_to "View Profile", @team_member.facebook, target: "_blank", class: "text-blue-600 hover:underline" %>
+              <% if (facebook_url = safe_external_url(@team_member.facebook)) %>
+                <%= link_to "View Profile", facebook_url, target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:underline" %>
               <% else %>
                 <span class="text-gray-400">Not provided</span>
               <% end %>

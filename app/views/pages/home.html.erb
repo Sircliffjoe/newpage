@@ -1,86 +1,287 @@
 <% hero_bg = cms_image_url(@page&.hero_image, "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop") %>
-<% feature_img = cms_image_url(@page&.section_image, "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop") %>
+<% feature_img = cms_image_url(@page&.section_image, "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1600&auto=format&fit=crop") %>
 
-<!-- Hero Section -->
-<section class="relative min-h-[88vh] flex items-center justify-center overflow-hidden bg-brand-blue-dark">
-  <div class="absolute inset-0 z-0">
-    <img src="<%= hero_bg %>" alt="NewPage Integrity Travels" class="w-full h-full object-cover opacity-40 mix-blend-overlay">
-    <div class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark via-brand-blue-dark/80 to-brand-blue-dark/40"></div>
+<% service_fallbacks = {
+  "travel" => "https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=1200&auto=format&fit=crop",
+  "visa" => "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop",
+  "study_abroad" => "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop",
+  "cac" => "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop"
+} %>
+
+<% destination_fallbacks = {
+  "GB" => "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1200&auto=format&fit=crop",
+  "UK" => "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1200&auto=format&fit=crop",
+  "CA" => "https://images.unsplash.com/photo-1517935706615-2717063c2225?q=80&w=1200&auto=format&fit=crop",
+  "US" => "https://images.unsplash.com/photo-1485738422979-f5c462d49f74?q=80&w=1200&auto=format&fit=crop",
+  "AE" => "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200&auto=format&fit=crop",
+  "AU" => "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?q=80&w=1200&auto=format&fit=crop",
+  "IE" => "https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?q=80&w=1200&auto=format&fit=crop",
+  "CN" => "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=1200&auto=format&fit=crop",
+  "QA" => asset_path("home/qatar-residence.jpg"),
+  "OM" => asset_path("home/oman-residence.jpg"),
+  "UG" => asset_path("home/uganda-visa.jpg")
+} %>
+
+<!-- Hero Section: Executive Full-Viewport Split Layout -->
+<section class="relative min-h-[calc(100vh-5rem)] flex items-center overflow-hidden hero-animated-gradient text-white">
+  <div class="absolute inset-0 z-0 pointer-events-none">
+    <img src="<%= hero_bg %>" alt="Global aviation and travel" class="w-full h-full object-cover opacity-20 mix-blend-luminosity">
+    <div class="absolute inset-0 hero-animated-gradient opacity-85"></div>
+    <div class="absolute inset-0 hero-grid-overlay"></div>
+    <div class="absolute -top-28 -right-24 w-[28rem] h-[28rem] bg-brand-red/25 rounded-full blur-3xl hero-orb-slow"></div>
+    <div class="absolute -bottom-32 -left-24 w-[30rem] h-[30rem] bg-brand-blue-light/25 rounded-full blur-3xl hero-orb-reverse"></div>
   </div>
 
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-    <span class="inline-block py-1.5 px-4 rounded-full bg-brand-red/20 text-brand-red-light border border-brand-red/30 text-xs sm:text-sm font-semibold tracking-wider mb-6 backdrop-blur-sm">
-      <%= @page&.setting("hero_badge", "NEWPAGE INTEGRITY TRAVELS & TOURS LIMITED") %>
-    </span>
-    <h1 class="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-      <%= @page&.hero_title.presence || "Your Gateway to Global Opportunities" %>
-    </h1>
-    <p class="mt-4 text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto font-light mb-10">
-      <%= @page&.hero_subtitle.presence || "Trusted travel & tours, visa assistance, international university admissions, and CAC corporate registration — delivered with integrity." %>
-    </p>
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+      <!-- Left: Messaging & CTAs -->
+      <div class="lg:col-span-7 text-left">
+        <div class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-white/10 border border-white/15 text-xs sm:text-sm font-semibold tracking-wider text-blue-100 mb-6 backdrop-blur-sm">
+          <%= @page&.setting("hero_badge", "WELCOME TO NEWPAGE INTEGRITY TRAVELS & TOURS LIMITED") %>
+        </div>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <%= link_to "Book Consultation", contact_path, class: "px-8 py-4 bg-brand-red hover:bg-brand-red-light text-white rounded-full font-semibold shadow-lg hover:-translate-y-0.5 transition-all" %>
-      <%= link_to "Explore Services", services_path, class: "px-8 py-4 bg-white text-brand-blue-dark hover:bg-slate-100 rounded-full font-semibold shadow-lg hover:-translate-y-0.5 transition-all" %>
-      <a href="<%= whatsapp_link('Hello NewPage Integrity, I would like to book a consultation.') %>" target="_blank" class="px-8 py-4 bg-white/15 backdrop-blur-md border border-white/25 text-white hover:bg-white/25 rounded-full font-semibold shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
-        Chat on WhatsApp
-      </a>
+        <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
+          <%= @page&.hero_title.presence || "Your Trusted Gateway to Global Travel, Visas & Corporate Success" %>
+        </h1>
+
+        <p class="text-base sm:text-lg lg:text-xl text-slate-300 max-w-2xl leading-relaxed mb-9">
+          <%= @page&.hero_subtitle.presence || "Seamless flight ticketing, high-approval visa & residency consulting, international university admissions, and accredited CAC business registration — delivered with integrity." %>
+        </p>
+
+        <div class="flex flex-col sm:flex-row flex-wrap gap-3.5 mb-10">
+          <%= link_to contact_path, class: "inline-flex items-center justify-center gap-2 px-7 py-4 bg-brand-red hover:bg-brand-red-light text-white rounded-full font-semibold text-sm sm:text-base shadow-lg shadow-brand-red/30 hover:-translate-y-0.5 transition-all" do %>
+            Book Consultation
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          <% end %>
+
+          <a href="<%= whatsapp_link('Hello NewPage Integrity Travels, I would like to make an inquiry.') %>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-7 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full font-semibold text-sm sm:text-base shadow-lg hover:-translate-y-0.5 transition-all">
+            Chat on WhatsApp
+          </a>
+
+          <%= link_to "Explore Services", services_path, class: "inline-flex items-center justify-center px-7 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-full font-semibold text-sm sm:text-base backdrop-blur-xs hover:-translate-y-0.5 transition-all" %>
+        </div>
+
+        <!-- Inline Trust Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-white/15">
+          <% [
+            { val: @page&.setting("stat_years", "10+"), label: "Years Experience" },
+            { val: @page&.setting("stat_visas", "5,000+"), label: "Visas & Admissions" },
+            { val: @page&.setting("stat_destinations", "50+"), label: "Global Destinations" },
+            { val: @page&.setting("stat_satisfaction", "99%"), label: "Client Satisfaction" }
+          ].each do |stat| %>
+            <div>
+              <div class="text-2xl sm:text-3xl font-heading font-extrabold text-white"><%= stat[:val] %></div>
+              <div class="text-xs text-slate-300 mt-0.5"><%= stat[:label] %></div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Right: Visual Collage Showcase -->
+      <div class="lg:col-span-5">
+        <div class="relative grid grid-cols-2 gap-4">
+          <div class="col-span-2 relative rounded-2xl overflow-hidden shadow-2xl border border-white/15 group h-64 sm:h-72 lg:h-80">
+            <%= image_tag "home/qatar-residence.jpg", alt: "Qatar Residence Permit & Visa Consulting", class: "w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" %>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex items-end p-4">
+              <div class="flex items-center justify-between w-full">
+                <span class="text-white font-heading font-bold text-sm sm:text-base">Qatar Residence &amp; Work Pathways</span>
+                <span class="px-2.5 py-1 rounded-full bg-brand-red text-white text-[11px] font-bold">Hot Offer</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative rounded-2xl overflow-hidden shadow-xl border border-white/15 group h-48 sm:h-52 lg:h-56">
+            <%= image_tag "home/oman-residence.jpg", alt: "Oman Residence Processing", class: "w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" %>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-3.5">
+              <span class="text-white font-heading font-bold text-xs sm:text-sm">Oman Residence</span>
+            </div>
+          </div>
+
+          <div class="relative rounded-2xl overflow-hidden shadow-xl border border-white/15 group h-48 sm:h-52 lg:h-56">
+            <%= image_tag "home/uganda-visa.jpg", alt: "Uganda Visa & Tours", class: "w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" %>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent flex items-end p-3.5">
+              <span class="text-white font-heading font-bold text-xs sm:text-sm">Uganda Visa &amp; Tours</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
-    <svg class="relative block w-full h-[50px] md:h-[90px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,115.93,198.71,105.7,243.68,98.92,286.7,78.5,321.39,56.44Z" class="fill-brand-gray-50"></path>
-    </svg>
   </div>
 </section>
 
-<!-- Stats Strip -->
-<section class="py-12 bg-brand-gray-50 relative z-20 -mt-10">
+<!-- Trending Visa & Residency Programs (Featuring Uploaded Campaign Visuals) -->
+<section class="py-20 bg-brand-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div class="max-w-2xl">
+        <span class="text-brand-red font-semibold text-sm uppercase tracking-wider">Featured Immigration Offers</span>
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-brand-gray-900 mt-2">Active Visa &amp; Residency Programs</h2>
+        <p class="text-slate-600 mt-2">Fast-tracked, transparent processing with full documentation support and dedicated consultant guidance.</p>
+      </div>
+      <%= link_to "View Visa Requirements →", visa_information_path, class: "text-brand-blue font-semibold hover:text-brand-red transition-colors whitespace-nowrap" %>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <% [
-        { val: @page&.setting("stat_years", "10+"), label: "Years Experience" },
-        { val: @page&.setting("stat_visas", "5,000+"), label: "Visas & Admissions" },
-        { val: @page&.setting("stat_destinations", "50+"), label: "Global Destinations" },
-        { val: @page&.setting("stat_satisfaction", "99%"), label: "Client Satisfaction" }
-      ].each do |stat| %>
-        <div class="bg-white rounded-2xl p-6 shadow-soft text-center hover:-translate-y-1 transition-all duration-300">
-          <div class="text-3xl sm:text-4xl font-heading font-bold text-brand-blue mb-1"><%= stat[:val] %></div>
-          <div class="text-gray-500 text-sm font-medium"><%= stat[:label] %></div>
+        {
+          image: "home/qatar-residence.jpg",
+          tag: "Middle East Residency",
+          title: "Qatar Residence Permit",
+          desc: "Relocate, work, or establish your presence in Doha with guided Qatar residence processing, documentation checks, and smooth onboarding.",
+          whatsapp_msg: "Hello NewPage Integrity, I am interested in the Qatar Residence program."
+        },
+        {
+          image: "home/oman-residence.jpg",
+          tag: "Gulf Residency",
+          title: "Oman Residence Permit",
+          desc: "Secure your Oman residency with end-to-end application guidance, transparent timelines, and reliable post-arrival travel support.",
+          whatsapp_msg: "Hello NewPage Integrity, I am interested in the Oman Residence program."
+        },
+        {
+          image: "home/uganda-visa.jpg",
+          tag: "East Africa Travel",
+          title: "Uganda Tourist & Business Visa",
+          desc: "Explore the Pearl of Africa or travel for business with fast Uganda visa approval, curated itineraries, flights, and hotel bookings.",
+          whatsapp_msg: "Hello NewPage Integrity, I would like to apply for a Uganda Visa."
+        }
+      ].each do |offer| %>
+        <div class="bg-white rounded-3xl shadow-soft overflow-hidden border border-slate-100 group hover:-translate-y-1.5 hover:shadow-hover transition-all duration-300 flex flex-col">
+          <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+            <%= image_tag offer[:image], alt: offer[:title], class: "w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" %>
+            <span class="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold bg-brand-blue-dark/85 text-white backdrop-blur-xs">
+              <%= offer[:tag] %>
+            </span>
+          </div>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <div>
+              <h3 class="font-heading text-xl font-bold text-brand-gray-900 mb-2"><%= offer[:title] %></h3>
+              <p class="text-slate-600 text-sm leading-relaxed mb-6"><%= offer[:desc] %></p>
+            </div>
+            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
+              <a href="<%= whatsapp_link(offer[:whatsapp_msg]) %>" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 px-4 rounded-xl bg-brand-blue hover:bg-brand-blue-dark text-white text-xs font-semibold transition-colors">
+                Apply via WhatsApp
+              </a>
+              <%= link_to "Inquire", contact_path, class: "py-2.5 px-4 rounded-xl border border-slate-200 hover:border-brand-blue text-slate-700 hover:text-brand-blue text-xs font-semibold transition-colors" %>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
   </div>
 </section>
 
-<!-- 4 Core Practice Pillars -->
+<!-- 4 Core Practice Pillars (Visual Image Cards) -->
 <section class="py-20 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center max-w-3xl mx-auto mb-14">
       <span class="text-brand-red font-semibold text-sm uppercase tracking-wider">What We Do</span>
       <h2 class="font-heading text-3xl md:text-4xl font-bold text-brand-gray-900 mt-2 mb-4">Four Pillars of Global Service</h2>
-      <p class="text-gray-500 text-lg">End-to-end travel, visa, study abroad, and corporate registration consulting tailored to individuals, students, and businesses.</p>
+      <p class="text-slate-600 text-lg">Comprehensive travel, immigration, international education, and corporate registration solutions under one trusted roof.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
       <% [
-        { title: "Travel & Tours", desc: "Domestic & international flights, hotel bookings, airport shuttles, travel insurance, and curated holiday packages.", path: services_path(category: "travel"), badge: "01" },
-        { title: "Visa Assistance", desc: "Tourist, student, work, and business visa consulting for the UK, USA, Canada, Schengen, UAE, China & South Africa.", path: visa_information_path, badge: "02" },
-        { title: "Study Abroad", desc: "Academic counseling, university admissions, scholarship guidance, and student visa processing worldwide.", path: study_abroad_path, badge: "03" },
-        { title: "CAC & Corporate", desc: "Fast business name, LLC, NGO registration, SCUML, TIN, annual returns, and post-incorporation filings.", path: cac_services_path, badge: "04" }
+        {
+          title: "Travel & Tours",
+          desc: "Flight ticketing to all airlines worldwide, hotel reservations, airport shuttles, travel health insurance, and bespoke holiday packages.",
+          path: services_path(category: "travel"),
+          badge: "01",
+          img: "https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=900&auto=format&fit=crop"
+        },
+        {
+          title: "Visa Assistance",
+          desc: "Tourist, student, work, business, and residency consulting for the UK, USA, Canada, Schengen, UAE, Qatar, Oman & more.",
+          path: visa_information_path,
+          badge: "02",
+          img: "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=900&auto=format&fit=crop"
+        },
+        {
+          title: "Study Abroad",
+          desc: "Foreign admission placement, SOP guidance, scholarship advisory, and student visa processing for top global universities.",
+          path: study_abroad_path,
+          badge: "03",
+          img: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=900&auto=format&fit=crop"
+        },
+        {
+          title: "CAC & Corporate",
+          desc: "Business Name, LTD, Church & NGO registration, Annual Returns, Share Increase, TIN, Tax Clearance, and SCUML certification.",
+          path: cac_services_path,
+          badge: "04",
+          img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=900&auto=format&fit=crop"
+        }
       ].each do |pillar| %>
-        <div class="group bg-brand-gray-50 rounded-2xl p-8 hover:bg-brand-blue transition-all duration-300 flex flex-col justify-between">
-          <div>
-            <span class="inline-block text-xs font-bold px-3 py-1 rounded-full bg-brand-blue/10 text-brand-blue group-hover:bg-white/20 group-hover:text-white mb-5"><%= pillar[:badge] %></span>
-            <h3 class="font-heading text-xl font-bold text-brand-gray-900 mb-3 group-hover:text-white transition-colors"><%= pillar[:title] %></h3>
-            <p class="text-gray-500 text-sm leading-relaxed mb-6 group-hover:text-blue-100 transition-colors"><%= pillar[:desc] %></p>
+        <div class="group bg-white rounded-2xl border border-slate-200/80 shadow-soft overflow-hidden hover:shadow-hover hover:-translate-y-1 transition-all duration-300 flex flex-col">
+          <div class="relative h-44 overflow-hidden bg-brand-blue-dark">
+            <img src="<%= pillar[:img] %>" alt="<%= pillar[:title] %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark/80 via-brand-blue-dark/20 to-transparent"></div>
+            <span class="absolute top-3 left-3 text-xs font-bold px-2.5 py-1 rounded-full bg-white/90 text-brand-blue shadow-xs"><%= pillar[:badge] %></span>
+            <h3 class="absolute bottom-3 left-4 right-4 font-heading text-xl font-bold text-white"><%= pillar[:title] %></h3>
           </div>
-          <%= link_to pillar[:path], class: "inline-flex items-center text-brand-blue font-semibold text-sm group-hover:text-white" do %>
-            Explore <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-          <% end %>
+          <div class="p-6 flex-1 flex flex-col justify-between">
+            <p class="text-slate-600 text-sm leading-relaxed mb-5"><%= pillar[:desc] %></p>
+            <%= link_to pillar[:path], class: "inline-flex items-center text-brand-blue font-semibold text-sm group-hover:text-brand-red transition-colors" do %>
+              Explore <%= pillar[:title] %>
+              <svg class="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            <% end %>
+          </div>
         </div>
       <% end %>
+    </div>
+  </div>
+</section>
+
+<!-- Official Divisions Showcase: Travel & Tours + CAC Corporate Services -->
+<section class="py-20 bg-slate-900 text-white relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-brand-blue-dark via-slate-900 to-brand-blue-dark opacity-95"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <span class="text-brand-red-light font-semibold text-sm uppercase tracking-wider">Our Core Divisions</span>
+      <h2 class="font-heading text-3xl md:text-4xl font-bold mt-2 mb-4">Travel Globally. Register Legally.</h2>
+      <p class="text-slate-300 text-base sm:text-lg">Whether you are planning an international journey or giving your business legal status in Nigeria, our dedicated teams handle every detail.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <!-- Travel & Tours Division Card -->
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xs flex flex-col sm:flex-row gap-6 items-center">
+        <div class="w-full sm:w-52 flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-white">
+          <%= image_tag "home/travel-tours-flyer.jpg", alt: "NewPage Integrity Travels & Tours Services", class: "w-full h-auto object-cover" %>
+        </div>
+        <div class="flex-1">
+          <span class="inline-block px-3 py-1 rounded-full bg-brand-red/20 text-brand-red-light text-xs font-bold uppercase tracking-wider mb-3">Travel &amp; Tours</span>
+          <h3 class="font-heading text-2xl font-bold text-white mb-3">All-Airlines Travel Agency</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            We partner with airlines worldwide to make your flights, visas, and holidays seamless and memorable.
+          </p>
+          <ul class="grid grid-cols-1 gap-2 text-xs sm:text-sm text-slate-200 mb-6">
+            <li class="flex items-center gap-2"><span class="text-brand-red-light font-bold">✓</span> Flight Ticketing &amp; Hotel Reservations</li>
+            <li class="flex items-center gap-2"><span class="text-brand-red-light font-bold">✓</span> Visa Assistance &amp; Foreign Admissions</li>
+            <li class="flex items-center gap-2"><span class="text-brand-red-light font-bold">✓</span> International Passport &amp; Airport Shuttles</li>
+            <li class="flex items-center gap-2"><span class="text-brand-red-light font-bold">✓</span> Travel Health Insurance &amp; Consultancy</li>
+          </ul>
+          <%= link_to "Explore Travel Services →", services_path(category: "travel"), class: "inline-flex items-center px-5 py-2.5 rounded-full bg-brand-red hover:bg-brand-red-light text-white text-xs sm:text-sm font-semibold transition-colors" %>
+        </div>
+      </div>
+
+      <!-- CAC Corporate Division Card -->
+      <div class="bg-white/5 border border-white/10 rounded-3xl p-6 sm:p-8 backdrop-blur-xs flex flex-col sm:flex-row gap-6 items-center">
+        <div class="w-full sm:w-52 flex-shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-white">
+          <%= image_tag "home/cac-services-flyer.jpg", alt: "NewPage Integrity CAC Corporate Registration Services", class: "w-full h-auto object-cover" %>
+        </div>
+        <div class="flex-1">
+          <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">Corporate Affairs (CAC)</span>
+          <h3 class="font-heading text-2xl font-bold text-white mb-3">Give Your Business Legal Status</h3>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">
+            Fast, compliant CAC registrations and statutory business filings handled by experienced corporate consultants.
+          </p>
+          <ul class="grid grid-cols-1 gap-2 text-xs sm:text-sm text-slate-200 mb-6">
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Business Name &amp; Limited Liability (LTD)</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Church, NGO &amp; Association Registration</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Annual Returns &amp; Share Increase/Allotment</li>
+            <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> TIN, Tax Clearance Certificate &amp; SCUML</li>
+          </ul>
+          <%= link_to "Start CAC Registration →", cac_services_path, class: "inline-flex items-center px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold transition-colors" %>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -99,21 +300,20 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <% @services.each do |service| %>
-          <div class="bg-white rounded-2xl shadow-soft overflow-hidden group hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
-            <div class="h-48 overflow-hidden bg-brand-blue-dark relative">
+          <div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden group hover:-translate-y-1.5 hover:shadow-hover transition-all duration-300 flex flex-col">
+            <div class="h-52 overflow-hidden bg-brand-blue-dark relative">
               <% if service.hero_image.attached? %>
-                <%= image_tag service.hero_image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+                <%= image_tag service.hero_image, alt: service.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
               <% else %>
-                <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-blue-dark flex items-center justify-center text-white/40 font-heading text-2xl font-bold px-6 text-center">
-                  <%= service.category.humanize %>
-                </div>
+                <img src="<%= service_fallbacks[service.category.to_s] || service_fallbacks['travel'] %>" alt="<%= service.title %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <% end %>
-              <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/90 text-brand-blue"><%= service.category.humanize %></span>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold bg-white/95 text-brand-blue shadow-xs"><%= service.category.humanize %></span>
             </div>
             <div class="p-6 flex-1 flex flex-col justify-between">
               <div>
-                <h3 class="font-heading font-bold text-xl text-brand-gray-900 mb-2"><%= service.title %></h3>
-                <p class="text-gray-500 text-sm mb-4 line-clamp-3"><%= service.short_description.presence || strip_tags(service.description.to_s).truncate(110) %></p>
+                <h3 class="font-heading font-bold text-xl text-brand-gray-900 mb-2 group-hover:text-brand-blue transition-colors"><%= service.title %></h3>
+                <p class="text-slate-600 text-sm mb-4 line-clamp-3"><%= service.short_description.presence || strip_tags(service.description.to_s).truncate(110) %></p>
               </div>
               <%= link_to "View Details →", service_path(slug: service.slug), class: "text-brand-blue font-semibold text-sm hover:text-brand-red transition-colors" %>
             </div>
@@ -138,13 +338,11 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <% @destinations.each do |destination| %>
-          <%= link_to destination_path(slug: destination.slug), class: "group relative rounded-2xl overflow-hidden h-72 shadow-md block bg-brand-blue-dark" do %>
+          <%= link_to destination_path(slug: destination.slug), class: "group relative rounded-2xl overflow-hidden h-72 shadow-md hover:shadow-xl block bg-brand-blue-dark transition-shadow" do %>
             <% if destination.hero_image.attached? %>
-              <%= image_tag destination.hero_image, class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
+              <%= image_tag destination.hero_image, alt: destination.name, class: "w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" %>
             <% else %>
-              <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-red flex items-center justify-center">
-                <span class="text-7xl"><%= flag_emoji(destination.country_code) %></span>
-              </div>
+              <img src="<%= destination_fallbacks[destination.country_code.to_s.upcase] || 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&auto=format&fit=crop' %>" alt="<%= destination.name %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
             <% end %>
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6">
               <span class="inline-block w-fit px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/20 backdrop-blur-xs text-white mb-2"><%= destination.category&.humanize %></span>
@@ -163,34 +361,41 @@
 <!-- Why Choose Us -->
 <section class="py-24 bg-brand-blue-dark text-white relative overflow-hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    <div class="flex flex-col lg:flex-row gap-14 items-center">
-      <div class="lg:w-1/2">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-6">
         <span class="text-brand-red-light font-semibold tracking-wider text-sm uppercase mb-3 block">Why NewPage Integrity</span>
-        <h2 class="font-heading text-3xl md:text-5xl font-bold mb-6">Excellence and Integrity in Every Journey</h2>
-        <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+        <h2 class="font-heading text-3xl md:text-5xl font-bold mb-6 leading-tight">Excellence and Integrity in Every Journey</h2>
+        <p class="text-slate-300 text-lg mb-8 leading-relaxed">
           From Warri to the world — we combine deep immigration expertise, transparent pricing, and personal consultant support so your travel, admission, or business registration succeeds without stress.
         </p>
 
         <div class="space-y-5">
           <% [
-            { title: "High Approval Success Rate", desc: "Thorough document verification, SOP review, and mock embassy interviews." },
+            { title: "High Approval Success Rate", desc: "Thorough document verification, SOP review, and embassy interview preparation." },
             { title: "Fast & Transparent Processing", desc: "Clear timelines and zero hidden fees across visa, admission, and CAC filings." },
-            { title: "Dedicated Personal Consultant", desc: "One-on-one WhatsApp, phone, and in-office support from start to finish." }
+            { title: "Dedicated Personal Consultant", desc: "One-on-one WhatsApp, phone, and in-office support from inquiry to completion." }
           ].each do |item| %>
             <div class="flex gap-4">
-              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-brand-red/25 flex items-center justify-center text-brand-red-light font-bold">✓</div>
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-brand-red/25 border border-brand-red/40 flex items-center justify-center text-brand-red-light font-bold">✓</div>
               <div>
                 <h4 class="font-heading font-bold text-lg"><%= item[:title] %></h4>
-                <p class="text-gray-400 text-sm"><%= item[:desc] %></p>
+                <p class="text-slate-400 text-sm"><%= item[:desc] %></p>
               </div>
             </div>
           <% end %>
         </div>
       </div>
 
-      <div class="lg:w-1/2 relative">
-        <div class="absolute inset-0 bg-gradient-to-tr from-brand-red to-brand-blue rounded-2xl transform translate-x-3 translate-y-3 opacity-40"></div>
-        <img src="<%= feature_img %>" alt="NewPage Integrity Consulting Team" class="relative z-10 rounded-2xl shadow-2xl w-full object-cover h-[440px]">
+      <div class="lg:col-span-6 relative">
+        <div class="absolute inset-0 bg-gradient-to-tr from-brand-red to-brand-blue-light rounded-3xl transform translate-x-3 translate-y-3 opacity-35"></div>
+        <img src="<%= feature_img %>" alt="NewPage Integrity Consulting Team" loading="lazy" class="relative z-10 rounded-3xl shadow-2xl w-full object-cover h-[440px]">
+        <div class="relative z-20 -mt-12 mx-4 sm:mx-6 bg-white text-slate-900 rounded-2xl p-5 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-brand-red">Warri Head Office</div>
+            <div class="font-heading font-bold text-sm sm:text-base text-brand-blue-dark">Top Floor, No. 4 Airport Road, Opp. Kosini Junction, Warri</div>
+          </div>
+          <%= link_to "Visit Us", contact_path, class: "px-5 py-2.5 rounded-full bg-brand-blue text-white text-xs font-semibold hover:bg-brand-blue-dark transition-colors whitespace-nowrap" %>
+        </div>
       </div>
     </div>
   </div>
@@ -210,24 +415,24 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <% @testimonials.each do |testimonial| %>
-          <div class="bg-white rounded-2xl p-8 shadow-soft flex flex-col justify-between">
+          <div class="bg-white rounded-2xl p-8 shadow-soft border border-slate-100 flex flex-col justify-between">
             <div>
               <div class="flex text-amber-400 mb-4 text-lg">
                 <%= "★" * (testimonial.rating || 5) %>
               </div>
-              <p class="text-gray-600 italic mb-6 leading-relaxed">"<%= testimonial.content %>"</p>
+              <p class="text-slate-600 italic mb-6 leading-relaxed">"<%= testimonial.content %>"</p>
             </div>
             <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
               <div class="w-11 h-11 rounded-full overflow-hidden bg-brand-blue/10 flex items-center justify-center font-bold text-brand-blue text-sm flex-shrink-0">
                 <% if testimonial.image.attached? %>
-                  <%= image_tag testimonial.image, class: "w-full h-full object-cover" %>
+                  <%= image_tag testimonial.image, alt: testimonial.client_name, class: "w-full h-full object-cover" %>
                 <% else %>
                   <%= testimonial.client_name.to_s.first(2).upcase %>
                 <% end %>
               </div>
               <div>
                 <div class="font-heading font-bold text-brand-gray-900 text-sm"><%= testimonial.client_name %></div>
-                <div class="text-xs text-gray-500"><%= testimonial.service_type&.humanize %></div>
+                <div class="text-xs text-slate-500"><%= testimonial.service_type&.humanize %></div>
               </div>
             </div>
           </div>
@@ -251,14 +456,12 @@
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <% @recent_posts.each do |post| %>
-          <article class="bg-brand-gray-50 rounded-2xl overflow-hidden shadow-soft group flex flex-col">
+          <article class="bg-brand-gray-50 rounded-2xl overflow-hidden shadow-soft border border-slate-100 group flex flex-col">
             <div class="h-48 bg-brand-blue-dark overflow-hidden">
               <% if post.featured_image.attached? %>
-                <%= image_tag post.featured_image, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
+                <%= image_tag post.featured_image, alt: post.title, class: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" %>
               <% else %>
-                <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-blue-dark flex items-center justify-center text-white/40 font-heading font-bold text-lg">
-                  <%= post.blog_category&.name %>
-                </div>
+                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop" alt="<%= post.title %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               <% end %>
             </div>
             <div class="p-6 flex-1 flex flex-col justify-between">
@@ -267,9 +470,9 @@
                 <h3 class="font-heading font-bold text-lg text-brand-gray-900 mt-1 mb-2 group-hover:text-brand-blue transition-colors">
                   <%= link_to post.title, blog_post_path(slug: post.slug) %>
                 </h3>
-                <p class="text-gray-500 text-sm line-clamp-2"><%= post.excerpt %></p>
+                <p class="text-slate-600 text-sm line-clamp-2"><%= post.excerpt %></p>
               </div>
-              <div class="mt-4 pt-3 border-t border-slate-200/70 flex justify-between items-center text-xs text-gray-400">
+              <div class="mt-4 pt-3 border-t border-slate-200/70 flex justify-between items-center text-xs text-slate-400">
                 <span><%= (post.published_at || post.created_at).strftime("%b %d, %Y") %></span>
                 <%= link_to "Read More →", blog_post_path(slug: post.slug), class: "text-brand-blue font-semibold" %>
               </div>
@@ -281,14 +484,62 @@
   </section>
 <% end %>
 
-<!-- Newsletter Signup (Wired to DB!) -->
+<!-- Head Office Map & Direct Contact Strip -->
+<section class="py-16 bg-brand-gray-50 border-t border-slate-200/70">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+      <div class="lg:col-span-5 p-8 sm:p-10 flex flex-col justify-center">
+        <span class="text-brand-red font-semibold text-xs uppercase tracking-wider mb-2">Visit Our Office</span>
+        <h2 class="font-heading text-2xl sm:text-3xl font-bold text-brand-gray-900 mb-4">Speak With a Consultant Today</h2>
+        <p class="text-slate-600 text-sm leading-relaxed mb-6">
+          Walk into our Warri Head Office or connect with our team via phone, email, or WhatsApp for immediate guidance.
+        </p>
+
+        <div class="space-y-3 text-sm text-slate-700 mb-7">
+          <div class="flex items-start gap-3">
+            <span class="text-brand-red font-bold">📍</span>
+            <span><%= site_setting("address", "Top Floor, No. 4 Airport Road, Opp. Kosini Junction, Warri, Delta State, Nigeria.") %></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-brand-red font-bold">📞</span>
+            <span>+234 803 865 6409 &middot; +234 908 289 8777 &middot; +234 803 626 9807</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-brand-red font-bold">✉️</span>
+            <a href="mailto:<%= site_setting('email', 'newpageintegritytravels@gmail.com') %>" class="text-brand-blue hover:underline"><%= site_setting("email", "newpageintegritytravels@gmail.com") %></a>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <%= link_to "Book a Consultation", contact_path, class: "px-6 py-3 rounded-full bg-brand-blue hover:bg-brand-blue-dark text-white text-sm font-semibold transition-colors" %>
+          <a href="<%= whatsapp_link('Hello NewPage Integrity Travels, I would like to speak with a consultant.') %>" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-colors">
+            WhatsApp Us
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 min-h-[300px] bg-slate-200">
+        <iframe
+          title="NewPage Integrity Travels Head Office Location"
+          src="https://www.google.com/maps?q=Airport+Road+Warri+Delta+State+Nigeria&output=embed"
+          class="w-full h-full min-h-[320px] border-0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Newsletter Signup -->
 <section class="py-20 bg-brand-blue text-white">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <h2 class="font-heading text-3xl md:text-4xl font-bold mb-4">Stay Updated with Travel, Visa &amp; Scholarship Alerts</h2>
     <p class="text-blue-100 mb-8">Join our newsletter for embassy updates, flight deals, scholarship deadlines, and CAC compliance reminders.</p>
 
     <%= form_with url: newsletter_subscribers_path, method: :post, class: "flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto" do %>
-      <%= email_field_tag "newsletter_subscriber[email]", nil, required: true, placeholder: "Enter your email address",
+      <%= spam_protection_fields %>
+      <%= email_field_tag "newsletter_subscriber[email]", nil, required: true, maxlength: 254, placeholder: "Enter your email address",
             class: "flex-grow px-6 py-4 rounded-full bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red shadow-sm" %>
       <%= submit_tag "Subscribe Now",
             class: "bg-brand-red hover:bg-brand-red-light text-white px-8 py-4 rounded-full font-semibold shadow-md transition-colors cursor-pointer whitespace-nowrap" %>

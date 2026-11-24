@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Admin Sign In | NewPage Integrity Travels &amp; Tours</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="font-sans antialiased min-h-screen bg-gradient-to-br from-brand-blue-dark via-brand-blue to-slate-900 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md mx-auto">
+      <!-- Brand Card Header -->
+      <div class="bg-white rounded-3xl shadow-2xl border border-white/10 overflow-hidden">
+        <div class="px-8 pt-8 pb-6 text-center border-b border-slate-100 bg-slate-50/70">
+          <%= link_to root_path, class: "inline-block mb-3" do %>
+            <%= image_tag "logo.png", alt: "NewPage Integrity Travels", class: "h-16 w-auto mx-auto object-contain" %>
+          <% end %>
+          <p class="text-xs font-bold uppercase tracking-widest text-brand-blue">Management Center</p>
+        </div>
+
+        <div class="px-8 py-8">
+          <% if notice.present? %>
+            <div class="mb-5 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm font-medium text-emerald-800">
+              <%= notice %>
+            </div>
+          <% end %>
+          <% if alert.present? %>
+            <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm font-medium text-red-700">
+              <%= alert %>
+            </div>
+          <% end %>
+
+          <%= yield %>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center space-y-2">
+        <%= link_to "← Back to Public Website", root_path, class: "inline-flex items-center text-sm font-medium text-slate-300 hover:text-white transition-colors" %>
+        <p class="text-xs text-slate-400">
+          &copy; <%= Time.current.year %> NewPage Integrity Travels &amp; Tours Limited
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

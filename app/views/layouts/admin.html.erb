@@ -3,6 +3,8 @@
   <head>
     <title>NewPage Integrity | Management Center</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -24,7 +26,12 @@
   <body class="bg-slate-50 font-sans text-slate-900 min-h-screen" data-controller="admin-sidebar">
     <!-- Mobile Header -->
     <div class="lg:hidden sticky top-0 z-40 bg-brand-blue-dark text-white px-4 h-16 flex items-center justify-between shadow">
-      <span class="font-heading font-bold text-lg">NewPage <span class="text-brand-red-light">CMS</span></span>
+      <%= link_to admin_root_path, class: "flex items-center gap-2.5" do %>
+        <div class="bg-white rounded-lg px-2 py-1 shadow-xs">
+          <%= image_tag "logo.png", alt: "NewPage Integrity Travels", class: "h-8 w-auto object-contain" %>
+        </div>
+        <span class="font-heading font-bold text-sm text-brand-red-light uppercase tracking-wider">CMS</span>
+      <% end %>
       <button type="button" data-action="click->admin-sidebar#toggle" class="p-2 rounded-lg bg-white/10 hover:bg-white/20">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
       </button>
@@ -36,13 +43,12 @@
     <div class="flex min-h-screen">
       <!-- Sidebar -->
       <aside data-admin-sidebar-target="sidebar" class="fixed lg:static inset-y-0 left-0 z-50 w-72 bg-brand-blue-dark text-slate-300 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out flex-shrink-0">
-        <div class="px-6 py-6 border-b border-white/10">
-          <%= link_to admin_root_path, class: "flex items-center gap-3" do %>
-            <div class="w-9 h-9 rounded-xl bg-brand-red flex items-center justify-center text-white font-heading font-bold shadow">NP</div>
-            <div>
-              <div class="font-heading font-bold text-lg text-white leading-tight">NewPage <span class="text-brand-red-light">CMS</span></div>
-              <div class="text-xs text-slate-400">Management Center</div>
+        <div class="px-6 py-5 border-b border-white/10">
+          <%= link_to admin_root_path, class: "flex flex-col items-start gap-2" do %>
+            <div class="bg-white rounded-xl px-3 py-2 shadow-sm">
+              <%= image_tag "logo.png", alt: "NewPage Integrity Travels", class: "h-10 w-auto object-contain" %>
             </div>
+            <div class="text-xs font-medium text-slate-400 tracking-wide uppercase">Management Center</div>
           <% end %>
         </div>
 

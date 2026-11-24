@@ -1,6 +1,6 @@
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b;">
   <div style="background: #1a365d; padding: 24px; text-align: center; border-radius: 12px 12px 0 0;">
-    <h1 style="color: #ffffff; margin: 0; font-size: 22px;">NewPage <span style="color: #e53e3e;">Integrity</span> Travels</h1>
+    <img src="https://<%= ENV.fetch('APP_HOST', 'newpageintegritytravels.com') %>/logo.png" alt="NewPage Integrity Travels" style="height: 56px; width: auto; background: #ffffff; padding: 8px 14px; border-radius: 10px;">
   </div>
   <div style="background: #ffffff; padding: 28px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px;">
     <p>Dear <strong><%= @submission.name %></strong>,</p>

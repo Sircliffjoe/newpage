@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Testimonials", type: :request do
-  describe "GET /index" do
+  describe "GET /testimonials" do
     it "returns http success" do
-      get "/testimonials/index"
+      get testimonials_path
       expect(response).to have_http_status(:success)
     end
   end
-
 end

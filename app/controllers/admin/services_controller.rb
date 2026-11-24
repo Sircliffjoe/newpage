@@ -1,6 +1,6 @@
 class Admin::ServicesController < Admin::BaseController
   before_action :require_content_editor!
-  before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_service, only: [ :show, :edit, :update, :destroy ]
 
   def index
     @services = Service.ordered

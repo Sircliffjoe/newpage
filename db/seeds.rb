@@ -95,7 +95,7 @@ end
 
 # 3. Blog Categories
 categories = {}
-["Travel Tips", "Visa Updates", "Study Abroad", "Business & CAC", "Immigration News"].each do |name|
+[ "Travel Tips", "Visa Updates", "Study Abroad", "Business & CAC", "Immigration News" ].each do |name|
   categories[name] = BlogCategory.find_or_create_by!(name: name)
 end
 

@@ -14,6 +14,10 @@ class Admin::NotesController < Admin::BaseController
 
   def destroy
     @note = @lead.notes.find(params[:id])
+    unless current_user.super_admin? || @note.author_id == current_user.id
+      redirect_to admin_lead_path(@lead), alert: "You can only delete your own notes."
+      return
+    end
     @note.destroy
     redirect_to admin_lead_path(@lead), notice: "Note removed.", status: :see_other
   end

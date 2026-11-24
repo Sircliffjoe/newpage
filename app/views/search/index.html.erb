@@ -1,13 +1,16 @@
-<section class="py-20 bg-brand-blue-dark text-white">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h1 class="font-heading text-3xl md:text-5xl font-bold mb-6">Search NewPage Integrity</h1>
-    <%= form_with url: search_path, method: :get, class: "flex flex-col sm:flex-row gap-3" do %>
-      <%= text_field_tag :q, @query, placeholder: "Search visas, UK study abroad, CAC registration, destinations...", autofocus: true,
-            class: "flex-1 px-6 py-4 rounded-full bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red" %>
-      <%= submit_tag "Search", class: "px-8 py-4 rounded-full bg-brand-red hover:bg-brand-red-light text-white font-semibold cursor-pointer" %>
-    <% end %>
-  </div>
-</section>
+<%= render layout: "shared/page_header", locals: {
+  title: "Search NewPage Integrity",
+  subtitle: "Find services, visa destinations, blog guides, and frequently asked questions.",
+  eyebrow: "Sitewide Search",
+  compact: true,
+  breadcrumbs: [["Home", root_path], ["Search", nil]]
+} do %>
+  <%= form_with url: search_path, method: :get, class: "flex flex-col sm:flex-row gap-3 w-full max-w-2xl" do %>
+    <%= text_field_tag :q, @query, placeholder: "Search visas, UK study abroad, CAC registration, destinations...", autofocus: true,
+          class: "flex-1 px-6 py-4 rounded-full bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red shadow-lg" %>
+    <%= submit_tag "Search", class: "px-8 py-4 rounded-full bg-brand-red hover:bg-brand-red-light text-white font-semibold cursor-pointer shadow-lg transition-colors" %>
+  <% end %>
+<% end %>
 
 <section class="py-16 bg-brand-gray-50">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">

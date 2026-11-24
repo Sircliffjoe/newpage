@@ -1,16 +1,12 @@
 <% hero_bg = cms_image_url(@page&.hero_image, "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop") %>
 <% story_img = cms_image_url(@page&.section_image, "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop") %>
 
-<!-- Hero Section -->
-<section class="relative py-24 bg-brand-blue-dark overflow-hidden">
-  <div class="absolute inset-0 z-0">
-    <img src="<%= hero_bg %>" alt="About NewPage Integrity" class="w-full h-full object-cover opacity-25 mix-blend-overlay">
-  </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h1 class="font-heading text-4xl md:text-5xl font-bold text-white mb-4"><%= @page&.hero_title.presence || "About NewPage Integrity" %></h1>
-    <p class="text-xl text-blue-100 max-w-2xl mx-auto"><%= @page&.hero_subtitle.presence || "Your trusted partner in navigating global travel, study abroad, visa, and corporate opportunities with excellence and transparency." %></p>
-  </div>
-</section>
+<%= render "shared/page_header",
+  title: @page&.hero_title.presence || "About NewPage Integrity",
+  subtitle: @page&.hero_subtitle.presence || "Your trusted partner in navigating global travel, study abroad, visa, and corporate opportunities with excellence and transparency.",
+  eyebrow: "Who We Are",
+  bg_image: hero_bg,
+  breadcrumbs: [["Home", root_path], ["About Us", nil]] %>
 
 <!-- Company Story & Mission -->
 <section class="py-20 bg-white">

@@ -3,7 +3,7 @@ class BlogPostsController < ApplicationController
     @page = PageSetting.for("blog")
     apply_page_meta_tags("blog", fallback_title: "Blog & Travel Insights")
     scope = BlogPost.published.includes(:blog_category, :author).recent
-    scope = scope.where(blog_category_id: params[:category]) if params[:category].present?
+    scope = scope.where(blog_category_id: params[:category].to_i) if params[:category].to_s.match?(/\A\d+\z/)
     if params[:q].present?
       pattern = "%#{ActiveRecord::Base.sanitize_sql_like(params[:q].strip)}%"
       scope = scope.where("title ILIKE ? OR excerpt ILIKE ? OR tags ILIKE ?", pattern, pattern, pattern)
@@ -13,7 +13,7 @@ class BlogPostsController < ApplicationController
   end
 
   def show
-    @blog_post = BlogPost.friendly.find(params[:slug])
+    @blog_post = BlogPost.published.friendly.find(params[:slug])
     set_meta_tags(
       title: @blog_post.meta_title.presence || @blog_post.title,
       description: @blog_post.meta_description.presence || @blog_post.excerpt

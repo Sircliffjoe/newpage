@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.1.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -10,6 +10,8 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
+# Keep json on 2.x (Rails 8.0 compatibility) with security fix
+gem "json", "~> 2.19", ">= 2.19.9"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
@@ -25,10 +27,11 @@ gem "pundit"
 gem "friendly_id", "~> 5.5"
 gem "meta-tags"
 gem "sitemap_generator"
-gem 'image_processing', '~> 2.0', '>= 2.0.1'
+gem "image_processing", "~> 2.0", ">= 2.0.1"
 
 # UI & Utilities
 gem "pagy"
+gem "csv"
 
 # Security
 gem "rack-attack"
@@ -58,7 +61,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   # Testing
-  gem "rspec-rails", "~> 7.1.0"
+  gem "rspec-rails", ">= 7.1"
   gem "factory_bot_rails"
   gem "faker"
 

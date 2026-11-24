@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::BaseController
   before_action :require_super_admin!
-  before_action :set_user, only: [:edit, :update, :destroy]
+  before_action :set_user, only: [ :edit, :update, :destroy ]
 
   def index
     @users = User.order(created_at: :desc)
@@ -26,6 +26,11 @@ class Admin::UsersController < Admin::BaseController
     if attrs["password"].blank?
       attrs.delete("password")
       attrs.delete("password_confirmation")
+    end
+
+    if @user == current_user && attrs["role"].present? && attrs["role"] != "super_admin"
+      redirect_to edit_admin_user_path(@user), alert: "You cannot downgrade your own Super Admin role."
+      return
     end
 
     if @user.update(attrs)

@@ -1,12 +1,11 @@
 <% content_for :title, "Frequently Asked Questions | Newpage Integrity Travels & Tours" %>
 
-<!-- Hero -->
-<section class="pt-28 pb-16 bg-brand-gray-50 text-center">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-4">Frequently Asked Questions</h1>
-    <p class="text-gray-500 max-w-2xl mx-auto">Find answers to common questions about our visa, travel, and corporate services.</p>
-  </div>
-</section>
+<%= render "shared/page_header",
+  title: "Frequently Asked Questions",
+  subtitle: "Clear answers to common questions about our travel bookings, visa consulting, study abroad admissions, and CAC services.",
+  eyebrow: "Help Center",
+  compact: true,
+  breadcrumbs: [["Home", root_path], ["FAQs", nil]] %>
 
 <!-- FAQs -->
 <section class="py-16 bg-white">

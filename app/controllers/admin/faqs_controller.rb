@@ -1,5 +1,5 @@
 class Admin::FaqsController < Admin::BaseController
-  before_action :set_faq, only: [:edit, :update, :destroy]
+  before_action :set_faq, only: [ :edit, :update, :destroy ]
 
   def index
     @faqs = Faq.order(position: :asc)

@@ -1,0 +1,38 @@
+<div class="mb-6 text-center">
+  <h1 class="font-heading text-2xl font-bold text-slate-900">Choose a New Password</h1>
+  <p class="text-sm text-slate-500 mt-1">Enter and confirm your new password below</p>
+</div>
+
+<%= render "devise/shared/error_messages", resource: resource %>
+
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: "space-y-5" }) do |f| %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div>
+    <%= f.label :password, "New password", class: "block text-sm font-semibold text-slate-700 mb-1.5" %>
+    <% if @minimum_password_length %>
+      <p class="text-xs text-slate-400 mb-1.5"><%= @minimum_password_length %> characters minimum</p>
+    <% end %>
+    <%= f.password_field :password,
+        autofocus: true,
+        autocomplete: "new-password",
+        required: true,
+        class: "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none transition" %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation, "Confirm new password", class: "block text-sm font-semibold text-slate-700 mb-1.5" %>
+    <%= f.password_field :password_confirmation,
+        autocomplete: "new-password",
+        required: true,
+        class: "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-xs focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 focus:outline-none transition" %>
+  </div>
+
+  <div class="pt-1">
+    <%= f.submit "Update Password", class: "w-full rounded-xl bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold py-3 px-4 text-sm shadow-md hover:shadow-lg transition-all cursor-pointer" %>
+  </div>
+<% end %>
+
+<div class="mt-6 text-center">
+  <%= link_to "← Back to Sign In", new_session_path(resource_name), class: "text-sm font-semibold text-brand-blue hover:text-brand-red transition-colors" %>
+</div>

@@ -28,4 +28,24 @@ module ApplicationHelper
     base = "https://wa.me/#{whatsapp_number}"
     message.present? ? "#{base}?text=#{CGI.escape(message)}" : base
   end
+
+  def safe_external_url(url)
+    return nil if url.blank?
+
+    uri = URI.parse(url.to_s.strip)
+    uri.to_s if uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def spam_protection_fields
+    token = Rails.application.message_verifier(:form_spam_protection).generate(Time.current.to_i)
+    safe_join([
+      hidden_field_tag(:_form_loaded_at, token),
+      content_tag(:div, style: "position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;", aria: { hidden: true }) do
+        label_tag(:website_url, "Leave this field blank") +
+          text_field_tag(:website_url, nil, tabindex: -1, autocomplete: "off")
+      end
+    ])
+  end
 end

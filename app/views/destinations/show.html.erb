@@ -1,20 +1,18 @@
 <% content_for :title, "#{@destination.name} | Newpage Integrity Travels & Tours" %>
 
-<!-- Hero -->
-<section class="relative py-24 bg-brand-blue-dark">
-  <% if @destination.hero_image.attached? %>
-    <div class="absolute inset-0 z-0">
-      <%= image_tag @destination.hero_image, class: "w-full h-full object-cover opacity-20 mix-blend-overlay" %>
-    </div>
+<%= render layout: "shared/page_header", locals: {
+  title: "#{flag_emoji(@destination.country_code)} #{@destination.name}".strip,
+  eyebrow: "#{@destination.category&.humanize || 'Travel'} Destination",
+  bg_image: @destination.hero_image.attached? ? url_for(@destination.hero_image) : "https://images.unsplash.com/photo-1488646953014-85cb44e25828?q=80&w=2035&auto=format&fit=crop",
+  compact: true,
+  breadcrumbs: [["Home", root_path], ["Destinations", destinations_path], [@destination.name, nil]]
+} do %>
+  <% if @destination.cost_estimate.present? %>
+    <p class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-red/20 border border-brand-red/30 text-brand-red-light text-sm font-semibold">
+      Starting from <%= @destination.cost_estimate %>
+    </p>
   <% end %>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <span class="inline-block px-4 py-1 rounded-full bg-white/10 text-white text-sm font-semibold mb-4"><%= @destination.category&.humanize %> Destination</span>
-    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-4"><%= @destination.name %></h1>
-    <% if @destination.cost_estimate.present? %>
-      <p class="text-brand-red-light text-xl font-semibold">Starting from <%= @destination.cost_estimate %></p>
-    <% end %>
-  </div>
-</section>
+<% end %>
 
 <!-- Content -->
 <section class="py-16 bg-white">

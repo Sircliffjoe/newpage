@@ -1,5 +1,13 @@
 class NewsletterSubscribersController < ApplicationController
+  include SpamProtection
+
   def create
+    if spam_submission?
+      redirect_back fallback_location: root_path,
+                    notice: "Welcome! You have been subscribed to NewPage Integrity travel & visa updates."
+      return
+    end
+
     email = params.dig(:newsletter_subscriber, :email) || params[:email]
     @subscriber = NewsletterSubscriber.find_or_initialize_by(email: email.to_s.strip.downcase)
     @subscriber.unsubscribed_at = nil

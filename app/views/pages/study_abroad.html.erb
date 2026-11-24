@@ -1,16 +1,19 @@
 <% hero_bg = cms_image_url(@page&.hero_image, "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop") %>
 
-<!-- Hero -->
-<section class="relative py-24 bg-brand-blue-dark">
-  <div class="absolute inset-0 z-0">
-    <img src="<%= hero_bg %>" alt="Students graduating" class="w-full h-full object-cover opacity-25 mix-blend-overlay">
+<%= render layout: "shared/page_header", locals: {
+  title: @page&.hero_title.presence || "Your Journey to a Global Degree",
+  subtitle: @page&.hero_subtitle.presence || "Academic counseling, overseas university admissions, scholarship guidance, and student visa processing for the UK, Canada, USA, Australia, Ireland & Europe.",
+  eyebrow: "International Education",
+  bg_image: hero_bg,
+  breadcrumbs: [["Home", root_path], ["Services", services_path], ["Study Abroad", nil]]
+} do %>
+  <div class="flex flex-col sm:flex-row gap-3.5 justify-center">
+    <%= link_to "Start Admission Inquiry", contact_path(subject: "Study Abroad Admission"), class: "px-7 py-3.5 rounded-full bg-brand-red hover:bg-brand-red-light text-white font-semibold text-sm shadow-lg shadow-brand-red/30 hover:-translate-y-0.5 transition-all" %>
+    <a href="<%= whatsapp_link('Hello NewPage Integrity, I want to apply for Study Abroad.') %>" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-sm backdrop-blur-xs hover:-translate-y-0.5 transition-all">
+      Chat on WhatsApp
+    </a>
   </div>
-  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <span class="inline-block py-1 px-3 rounded-full bg-brand-red/20 text-brand-red-light border border-brand-red/30 text-xs font-semibold tracking-wider mb-5">INTERNATIONAL EDUCATION</span>
-    <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6"><%= @page&.hero_title.presence || "Your Journey to a Global Degree" %></h1>
-    <p class="text-xl text-blue-100 max-w-3xl mx-auto"><%= @page&.hero_subtitle.presence || "Academic counseling, overseas university admissions, scholarship guidance, and student visa processing for the UK, Canada, USA, Australia, Ireland & Europe." %></p>
-  </div>
-</section>
+<% end %>
 
 <!-- Dynamic Study Destinations -->
 <section class="py-20 bg-white">

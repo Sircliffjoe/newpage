@@ -5,13 +5,25 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   stale_when_importmap_changes
 
+  layout :resolve_layout
+
   before_action :set_default_meta_tags
 
   rescue_from Pundit::NotAuthorizedError do
     redirect_to admin_root_path, alert: "You are not authorized to perform this action."
   end
 
+  protected
+
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || admin_root_path
+  end
+
   private
+
+  def resolve_layout
+    devise_controller? ? "auth" : "application"
+  end
 
   def set_default_meta_tags
     set_meta_tags(

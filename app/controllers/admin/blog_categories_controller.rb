@@ -1,5 +1,5 @@
 class Admin::BlogCategoriesController < Admin::BaseController
-  before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :set_category, only: [ :edit, :update, :destroy ]
 
   def index
     @blog_categories = BlogCategory.all

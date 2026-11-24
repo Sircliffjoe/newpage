@@ -17,7 +17,7 @@ Rails.application.configure do
   config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
   # Logging
-  config.log_tags = [:request_id]
+  config.log_tags = [ :request_id ]
   config.logger = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
   config.silence_healthcheck_path = "/up"
@@ -38,7 +38,7 @@ Rails.application.configure do
 
   config.i18n.fallbacks = true
   config.active_record.dump_schema_after_migration = false
-  config.active_record.attributes_for_inspect = [:id]
+  config.active_record.attributes_for_inspect = [ :id ]
 
   config.hosts = [
     "newpageintegritytravels.com",

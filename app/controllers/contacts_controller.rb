@@ -1,4 +1,6 @@
 class ContactsController < ApplicationController
+  include SpamProtection
+
   def new
     @page = PageSetting.for("contact")
     apply_page_meta_tags("contact", fallback_title: "Contact Us")
@@ -6,6 +8,12 @@ class ContactsController < ApplicationController
   end
 
   def create
+    if spam_submission?(content: params.dig(:contact_submission, :message))
+      redirect_back fallback_location: contact_path,
+                    notice: "Thank you! Your message has been received. A consultant will reach out within 24 hours."
+      return
+    end
+
     @contact_submission = ContactSubmission.new(contact_params)
 
     if @contact_submission.save

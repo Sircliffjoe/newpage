@@ -1,7 +1,12 @@
-<section class="py-20 bg-white">
+<%= render "shared/page_header",
+  title: "Terms of Service",
+  subtitle: "Effective Date: #{Time.current.strftime('%B %Y')}",
+  eyebrow: "Legal & Compliance",
+  compact: true,
+  breadcrumbs: [["Home", root_path], ["Terms of Service", nil]] %>
+
+<section class="py-16 bg-white">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose max-w-none">
-    <h1 class="font-heading text-4xl font-bold text-brand-gray-900 mb-6">Terms of Service</h1>
-    <p class="text-sm text-slate-500">Effective Date: <%= Time.current.strftime("%B %Y") %></p>
     <% if @page&.rich_content&.present? %>
       <%= @page.rich_content %>
     <% else %>
