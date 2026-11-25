@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_24_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_110000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_120000) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "awards", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "recipient_type", default: 0, null: false
+    t.string "recipient_name", null: false
+    t.string "issuing_organization", null: false
+    t.date "awarded_on"
+    t.string "location"
+    t.string "category"
+    t.text "description"
+    t.boolean "featured", default: false, null: false
+    t.boolean "published", default: true, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["featured"], name: "index_awards_on_featured"
+    t.index ["published"], name: "index_awards_on_published"
+    t.index ["recipient_type"], name: "index_awards_on_recipient_type"
   end
 
   create_table "blog_categories", force: :cascade do |t|

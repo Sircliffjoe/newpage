@@ -24,6 +24,9 @@
 /tmp/pids/*
 !/tmp/pids/.keep
 
+# Ignore raw source upload folder (organized copies live in db/seed_assets/)
+/files/
+
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep

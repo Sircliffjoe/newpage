@@ -24,7 +24,11 @@ class Admin::ServicesController < Admin::BaseController
   end
 
   def update
-    if @service.update(service_params)
+    new_flyers = params.dig(:service, :flyers)&.reject(&:blank?)
+    attrs = service_params.except(:flyers)
+
+    if @service.update(attrs)
+      @service.flyers.attach(new_flyers) if new_flyers.present?
       redirect_to admin_services_path, notice: "Service updated successfully."
     else
       render :edit, status: :unprocessable_entity
@@ -45,7 +49,8 @@ class Admin::ServicesController < Admin::BaseController
   def service_params
     params.require(:service).permit(
       :title, :slug, :category, :short_description, :description,
-      :hero_image, :icon, :benefits, :requirements, :position, :published, :featured
+      :hero_image, :icon, :benefits, :requirements, :position, :published, :featured,
+      flyers: []
     )
   end
 end

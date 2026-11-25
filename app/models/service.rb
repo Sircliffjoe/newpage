@@ -6,6 +6,7 @@ class Service < ApplicationRecord
 
   has_rich_text :description
   has_one_attached :hero_image
+  has_many_attached :flyers
 
   validates :title, :category, presence: true
 

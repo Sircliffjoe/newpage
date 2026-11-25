@@ -2,9 +2,13 @@ class PagesController < ApplicationController
   def home
     @page = PageSetting.for("home")
     apply_page_meta_tags("home")
-    @services = Service.published.ordered.limit(6)
+    @services = Service.published.featured.ordered.limit(6)
+    @services = Service.published.ordered.limit(6) if @services.empty?
+    @awards = Award.published.featured.ordered.limit(4)
+    @awards = Award.published.ordered.limit(4) if @awards.empty?
     @testimonials = Testimonial.published.ordered.limit(3)
-    @destinations = Destination.published.ordered.limit(6)
+    @destinations = Destination.published.featured.ordered.limit(6)
+    @destinations = Destination.published.ordered.limit(6) if @destinations.empty?
     @recent_posts = BlogPost.published.includes(:blog_category, :author).recent.limit(3)
     @gallery_preview = GalleryImage.published.ordered.limit(6)
   end
@@ -13,6 +17,8 @@ class PagesController < ApplicationController
     @page = PageSetting.for("about")
     apply_page_meta_tags("about", fallback_title: "About Us")
     @team_members = TeamMember.published.ordered
+    @founder = @team_members.find { |m| m.role.to_s.downcase.include?("founder") } || @team_members.first
+    @awards = Award.published.ordered
   end
 
   def visa_information

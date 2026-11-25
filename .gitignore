@@ -35,6 +35,13 @@ webpack-generated-files/
 .sass-cache/
 .rspec_parallel/
 
+# Local ActiveStorage uploads
+/storage/*
+!/storage/.keep
+
+# Raw source upload folder (organized copies live in db/seed_assets/)
+/files/
+
 # System files
 .DS_Store
 .DS_Store?
@@ -44,4 +51,3 @@ webpack-generated-files/
 ehthumbs.db
 Icon?
 Thumbs.db
-```

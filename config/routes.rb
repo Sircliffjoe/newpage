@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   # Other pages
   get "/testimonials", to: "testimonials#index", as: :testimonials
   get "/gallery", to: "gallery#index", as: :gallery
+  get "/awards", to: "awards#index", as: :awards
   get "/faq", to: "faqs#index", as: :faqs
 
   # Contact & Newsletter
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
     resources :blog_categories
     resources :blog_posts
     resources :testimonials
+    resources :awards
     resources :gallery_images
     resources :faqs
     resources :team_members

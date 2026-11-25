@@ -6,6 +6,7 @@ class Admin::DashboardController < Admin::BaseController
       services: Service.count,
       destinations: Destination.count,
       blog_posts: BlogPost.count,
+      awards: Award.count,
       gallery_images: GalleryImage.count,
       subscribers: NewsletterSubscriber.active.count,
       emails_sent: Email.sent.count

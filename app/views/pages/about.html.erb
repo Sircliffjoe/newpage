@@ -68,6 +68,83 @@
   </div>
 </section>
 
+<!-- Founder & CEO Spotlight -->
+<% if @founder.present? %>
+  <section class="py-20 bg-slate-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-5">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-slate-800">
+            <% if @founder.image.attached? %>
+              <%= image_tag @founder.image, alt: @founder.name, class: "w-full h-[460px] object-cover object-top" %>
+            <% else %>
+              <div class="w-full h-[420px] flex items-center justify-center bg-brand-blue text-5xl font-heading font-bold">
+                <%= @founder.name.split.map(&:first).join.first(2).upcase %>
+              </div>
+            <% end %>
+            <div class="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
+              <div class="text-xs font-bold uppercase tracking-wider text-amber-400">Founder &amp; Chief Executive Officer</div>
+              <div class="font-heading font-bold text-lg text-white"><%= @founder.name %></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <span class="text-brand-red-light font-semibold text-sm uppercase tracking-wider">Leadership</span>
+          <h2 class="font-heading text-3xl md:text-4xl font-bold mt-2 mb-5">Meet Our Founder — Mrs. Ify Adegoke</h2>
+          <p class="text-slate-300 text-base leading-relaxed mb-6">
+            <%= @founder.bio %>
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-1">Leadership Fellowship</div>
+              <div class="font-heading font-bold text-white text-base">Fellow, African Institute of Public Leadership (FAIPL)</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div class="text-brand-red-light font-bold text-xs uppercase tracking-wider mb-1">Industry Leadership</div>
+              <div class="font-heading font-bold text-white text-base">NANTA Eastern Zone Travel Agency of the Year</div>
+            </div>
+          </div>
+          <%= link_to "View Awards & Recognition →", awards_path, class: "inline-flex items-center px-6 py-3 rounded-full bg-brand-red hover:bg-brand-red-light text-white text-sm font-semibold transition-colors" %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<!-- Awards & Achievements Preview -->
+<% if @awards&.any? %>
+  <section class="py-20 bg-brand-gray-50 border-t border-slate-200/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <span class="text-brand-red font-semibold text-sm uppercase tracking-wider">Milestones &amp; Honours</span>
+          <h2 class="font-heading text-3xl font-bold text-brand-gray-900 mt-2">Awards &amp; Recognition</h2>
+        </div>
+        <%= link_to "Explore All Awards →", awards_path, class: "text-brand-blue font-semibold hover:text-brand-red transition-colors" %>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <% @awards.each do |award| %>
+          <div class="bg-white rounded-2xl p-6 shadow-soft border border-slate-100 flex flex-col sm:flex-row gap-5 items-start">
+            <% if award.image.attached? %>
+              <%= image_tag award.image, alt: award.title, loading: "lazy", class: "w-full sm:w-36 h-44 sm:h-36 rounded-xl object-cover object-top flex-shrink-0 border border-slate-100" %>
+            <% end %>
+            <div>
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold mb-2 <%= award.founder? ? 'bg-amber-100 text-amber-800' : 'bg-brand-blue/10 text-brand-blue' %>">
+                <%= award.recipient_label %>
+              </span>
+              <h3 class="font-heading font-bold text-lg text-brand-gray-900"><%= award.title %></h3>
+              <p class="text-xs font-semibold text-brand-red mt-0.5 mb-2"><%= award.issuing_organization %></p>
+              <p class="text-slate-600 text-sm leading-relaxed"><%= award.description %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>
+
 <!-- Dynamic Team Section (CMS-driven) -->
 <% if @team_members.any? %>
   <section class="py-20 bg-white">

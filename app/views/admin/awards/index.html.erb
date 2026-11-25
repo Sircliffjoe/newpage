@@ -1,0 +1,78 @@
+<% content_for :header, "Awards & Recognition" %>
+
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+  <div>
+    <h2 class="font-heading text-2xl font-bold text-slate-900">Awards &amp; Achievements</h2>
+    <p class="text-sm text-slate-500 mt-0.5">Manage awards earned by NewPage Integrity Travels &amp; Tours and Founder/CEO Mrs. Ify Adegoke.</p>
+  </div>
+  <%= link_to "+ Add Award", new_admin_award_path, class: "inline-flex items-center justify-center px-5 py-2.5 bg-brand-blue hover:bg-brand-blue-light text-white rounded-xl text-sm font-semibold shadow-xs transition-colors" %>
+</div>
+
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+  <% if @awards.any? %>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="px-6 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Award</th>
+            <th class="px-6 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Recipient</th>
+            <th class="px-6 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Issuing Body</th>
+            <th class="px-6 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date</th>
+            <th class="px-6 py-3.5 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3.5 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-100">
+          <% @awards.each do |award| %>
+            <tr class="hover:bg-slate-50/70 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3.5">
+                  <% if award.image.attached? %>
+                    <%= image_tag award.image, class: "h-12 w-12 rounded-xl object-cover border border-slate-200 flex-shrink-0" %>
+                  <% else %>
+                    <div class="h-12 w-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg flex-shrink-0">🏆</div>
+                  <% end %>
+                  <div>
+                    <div class="text-sm font-bold text-slate-900"><%= award.title %></div>
+                    <% if award.category.present? %>
+                      <div class="text-xs text-slate-500"><%= award.category %></div>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold <%= award.founder? ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800' %>">
+                  <%= award.recipient_label %>
+                </span>
+                <div class="text-xs text-slate-600 mt-1"><%= award.recipient_name %></div>
+              </td>
+              <td class="px-6 py-4 text-sm text-slate-700"><%= award.issuing_organization %></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                <%= award.awarded_on ? award.awarded_on.strftime("%b %d, %Y") : "—" %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold <%= award.published? ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600' %>">
+                    <%= award.published? ? "Published" : "Draft" %>
+                  </span>
+                  <% if award.featured? %>
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">Featured</span>
+                  <% end %>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
+                <%= link_to "Edit", edit_admin_award_path(award), class: "text-brand-blue hover:text-brand-blue-dark font-semibold" %>
+                <%= button_to "Delete", admin_award_path(award), method: :delete, data: { turbo_confirm: "Delete this award?" }, class: "text-red-600 hover:text-red-800 font-semibold inline cursor-pointer" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="text-center py-14 px-6">
+      <p class="text-slate-500 text-sm mb-4">No awards have been added yet.</p>
+      <%= link_to "+ Add Your First Award", new_admin_award_path, class: "inline-flex px-5 py-2.5 bg-brand-blue text-white rounded-xl text-sm font-semibold" %>
+    </div>
+  <% end %>
+</div>

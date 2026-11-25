@@ -63,6 +63,54 @@
   </div>
 </section>
 
+<!-- Featured 2027 Study Abroad Programs & Scholarships -->
+<% if @study_services.any? %>
+  <section class="py-20 bg-brand-gray-50 border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-brand-red font-semibold text-sm uppercase tracking-wider">2027 Intakes &amp; Scholarships Open</span>
+        <h2 class="font-heading text-3xl md:text-4xl font-bold text-brand-gray-900 mt-2 mb-3">Featured Admission Programs &amp; Offers</h2>
+        <p class="text-slate-600">Explore our active partner university pathways, automatic scholarships, fee waivers, and online certification programs.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% @study_services.each do |service| %>
+          <article class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden group hover:-translate-y-1.5 hover:shadow-hover transition-all duration-300 flex flex-col">
+            <div class="relative h-60 overflow-hidden bg-brand-blue-dark">
+              <% if service.hero_image.attached? %>
+                <%= image_tag service.hero_image, alt: service.title, loading: "lazy", class: "w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" %>
+              <% else %>
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000&auto=format&fit=crop" alt="<%= service.title %>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <% end %>
+              <% if service.flyers.attached? %>
+                <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/70 text-white backdrop-blur-xs">
+                  +<%= service.flyers.count %> <%= "flyer".pluralize(service.flyers.count) %>
+                </span>
+              <% end %>
+            </div>
+            <div class="p-6 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="font-heading font-bold text-xl text-brand-gray-900 mb-2 group-hover:text-brand-blue transition-colors">
+                  <%= link_to service.title, service_path(slug: service.slug) %>
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-5 line-clamp-3">
+                  <%= service.short_description.presence || strip_tags(service.description.to_s).truncate(130) %>
+                </p>
+              </div>
+              <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <%= link_to "View Program & Flyers →", service_path(slug: service.slug), class: "text-brand-blue font-semibold text-sm hover:text-brand-red transition-colors" %>
+                <a href="<%= whatsapp_link("Hello NewPage Integrity, I want to apply for #{service.title}.") %>" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white text-xs font-semibold transition-colors">
+                  Apply
+                </a>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>
+
 <!-- 4-Step Admission Process -->
 <section class="py-20 bg-brand-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
